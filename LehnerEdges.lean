@@ -27,3 +27,10 @@ import LehnerEdges.PurificationBound
 import LehnerEdges.GaussianBlock
 import LehnerEdges.GaussianEdgeComparison
 import LehnerEdges.MatrixRayleigh
+import LehnerEdges.GaussianMaximum
+import LehnerEdges.KroneckerRayleigh
+import LehnerEdges.GueModel
+import LehnerEdges.QuadraticEdges
+import LehnerEdges.Theorem72
+import LehnerEdges.SpectralResults
+import LehnerEdges.Asymptotics

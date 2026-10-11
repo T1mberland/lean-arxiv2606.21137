@@ -48,3 +48,14 @@ run_cmd do
 #print axioms LehnerEdges.gaussian_wishart_positive_excess_le_three
 #print axioms LehnerEdges.gaussian_purification_edge_bound_six
 #print axioms LehnerEdges.opNorm_eq_signed_rayleigh_sup
+#print axioms LehnerEdges.stdGaussian_integral_max_le
+#print axioms LehnerEdges.gueFamily_pair_law
+#print axioms LehnerEdges.integral_gueMatrixModel_transpose
+#print axioms LehnerEdges.transposedGueMatrixModel_norm_eq_max
+#print axioms LehnerEdges.expected_gueMatrixModel_norm_le_eight
+#print axioms LehnerEdges.theorem_7_2
+#print axioms LehnerEdges.expected_gueMatrixModel_lambdaMax_le
+#print axioms LehnerEdges.expected_gueMatrixModel_lambdaMin_ge
+#print axioms LehnerEdges.gueMatrixModel_norm_concentration
+#print axioms LehnerEdges.expected_norm_excess_tendsto_zero
+#print axioms LehnerEdges.expected_norm_limsup_le_of_edge_tendsto

@@ -1,5 +1,5 @@
 warning: lean-sudakov: repository '/home/user/projects/lean-arxiv2606.21137/.lake/packages/lean-sudakov' has local changes
-PASS: recursively audited 417 project declarations; only propext, Classical.choice, Quot.sound permitted.
+PASS: recursively audited 494 project declarations; only propext, Classical.choice, Quot.sound permitted.
 'LehnerEdges.two_fiber_stiefel_increment' depends on axioms: [propext, Classical.choice, Quot.sound]
 'LehnerEdges.traceNorm_eq_sup_contractions' depends on axioms: [propext, Classical.choice, Quot.sound]
 'LehnerEdges.weighted_trace_amgm' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -26,3 +26,14 @@ PASS: recursively audited 417 project declarations; only propext, Classical.choi
 'LehnerEdges.gaussian_wishart_positive_excess_le_three' depends on axioms: [propext, Classical.choice, Quot.sound]
 'LehnerEdges.gaussian_purification_edge_bound_six' depends on axioms: [propext, Classical.choice, Quot.sound]
 'LehnerEdges.opNorm_eq_signed_rayleigh_sup' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LehnerEdges.stdGaussian_integral_max_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LehnerEdges.gueFamily_pair_law' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LehnerEdges.integral_gueMatrixModel_transpose' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LehnerEdges.transposedGueMatrixModel_norm_eq_max' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LehnerEdges.expected_gueMatrixModel_norm_le_eight' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LehnerEdges.theorem_7_2' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LehnerEdges.expected_gueMatrixModel_lambdaMax_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LehnerEdges.expected_gueMatrixModel_lambdaMin_ge' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LehnerEdges.gueMatrixModel_norm_concentration' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LehnerEdges.expected_norm_excess_tendsto_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LehnerEdges.expected_norm_limsup_le_of_edge_tendsto' depends on axioms: [propext, Classical.choice, Quot.sound]

@@ -20,6 +20,15 @@ statements and proof structure are attributed to the paper. In particular,
 the Stiefel increment lemma is proved here through elementary positive traces,
 rather than by importing an unformalized general square-root inequality.
 
+The final norm estimate follows the paper's separate-edge and concentration
+route. An elementary exponential-moment bound on each positive centered
+deviation gives a correction `2L` instead of `3L`, yielding the stronger
+constant 8 before weakening to the published constant 9. The matrix
+vectorization transpose, its Gaussian invariance, and all joint Hermitian-test
+GUE laws are proved locally. The asymptotic result uses only these finite
+estimates and elementary norm and limit inequalities; no free spectral-edge
+identification is imported.
+
 ## Reused Lean results
 
 | Dependency | Pinned revision | Use |

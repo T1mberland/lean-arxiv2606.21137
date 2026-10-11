@@ -1,13 +1,23 @@
 # Finite-dimensional Lehner edge estimates in Lean
 
-This is a **partial formalization**, with proved intermediate results, of
+This is a formalization of the main finite-dimensional estimates in
 Benoît Collins and Yuta Yamagishi, *A Sudakov–Fernique proof of Lehner-type edge
 bounds for matrix-valued GUE sums*, [arXiv:2606.21137v2](https://arxiv.org/abs/2606.21137v2).
 The full v2 PDF, including its proofs, was read before implementation.
 
-**Theorem 7.2 is not proved.** Neither are the expected spectral-edge bounds,
-the asymptotic corollaries, or the identification with free spectral edges. There is no axiom asserting any of
-these results and no theorem with additional assumptions standing in for them.
+**Theorem 7.2 is proved**, with its explicit constant **9**, for the actual
+normalized GUE Kronecker matrix. The proof also establishes constant **8** for
+every positive `M`. The coefficient matrices retain the paper's positivity
+assumptions; the deterministic matrix need only be Hermitian. The empty
+coefficient family is included.
+
+The expected upper and lower spectral-edge bounds have constant **6**.
+Spectral Lipschitz estimates and Gaussian concentration apply to the actual
+matrix model. The identification of finite variational quantities with free
+spectral edges is **not formalized or assumed**. Full density duality and some
+subsidiary results also remain open; see the formalization report.
+Corollary 1.2 is proved for those finite variational quantities, including its
+limsup conclusion when the variational edges converge.
 
 The development proves the two-fiber Stiefel increment inequality (Lemma 4.1),
 the weighted trace arithmetic–geometric mean inequality, the density upper
@@ -18,8 +28,9 @@ the Gaussian comparison with arbitrary deterministic drift. It also transports
 Gaussian concentration to finite real Hilbert spaces and applies it to finite
 restrictions of the spectral process. It also proves continuous-index comparison, singular purification increments, the full quadratic-process
 expectation bound with constant 6, and the Wishart positive-excess bound with
-constant 3. The quadratic process has not yet been identified with the
-spectral edge of the paper’s Kronecker matrix model.
+constant 3. The vectorization transpose and Gaussian invariance under that
+transpose are proved explicitly to identify the process with the matrix's
+spectral edge.
 
 ## Build and verify
 
