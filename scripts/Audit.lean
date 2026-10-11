@@ -37,3 +37,14 @@ run_cmd do
 #print axioms LehnerEdges.opNorm_eq_max_edges
 #print axioms sudakov_fernique_drift
 #print axioms LogSobolev.gaussian_hasSubgaussianMGF
+#print axioms LehnerEdges.purification_increment
+#print axioms LehnerEdges.separable_linear_gaussian_comparison
+#print axioms LehnerEdges.full_purification_comparison
+#print axioms LehnerEdges.full_signed_purification_comparison
+#print axioms LehnerEdges.stdGaussian_integral_norm_contraction_le
+#print axioms LehnerEdges.real_gaussian_matrix_norm_mean_le
+#print axioms LehnerEdges.stdGaussian_integral_positive_centered_le_one
+#print axioms LehnerEdges.complexGaussianMatrix_norm_le_realStack
+#print axioms LehnerEdges.gaussian_wishart_positive_excess_le_three
+#print axioms LehnerEdges.gaussian_purification_edge_bound_six
+#print axioms LehnerEdges.opNorm_eq_signed_rayleigh_sup

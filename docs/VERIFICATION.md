@@ -8,24 +8,23 @@ in `lake-manifest.json`.
 | `MATHLIB_NO_CACHE_ON_UPDATE=1 lake update` | Exit 0; toolchain already current; root and Mathlib post-update hooks ran |
 | Compatibility bootstrap from pristine Sudakov source | Passed; update hook reproduced the exact expected patched-source SHA-256 |
 | Repeated dependency update | Exit 0; compatibility hook is idempotent |
-| `lake build` | **Exit 0**, `Build completed successfully (3453 jobs).` |
-| `lake env lean examples/Import.lean` | **Exit 0**, seven independent examples importing the complete public library |
-| `lake env lean docs/Statements.lean` | **Exit 0**, 109 exported theorem type checks; output in [statements.txt](statements.txt) |
-| `lake env lean scripts/Audit.lean` | **Exit 0**, recursive audit of **195** project declarations; output in [axiom-audit.txt](axiom-audit.txt) |
-| Mathematical source scan | All 16 mathematical source files contain no proof placeholders, custom axiom declarations, or opaque declarations |
+| `lake build` | **Exit 0**, `Build completed successfully (3468 jobs).` |
+| `lake env lean examples/Import.lean` | **Exit 0**, 12 independent examples importing the complete public library |
+| `lake env lean docs/Statements.lean` | **Exit 0**, 219 exported theorem type checks; output in [statements.txt](statements.txt) |
+| `lake env lean scripts/Audit.lean` | **Exit 0**, recursive audit of **417** project declarations; output in [axiom-audit.txt](axiom-audit.txt) |
+| Mathematical source scan | All 30 mathematical source files contain no proof placeholders, custom axiom declarations, or opaque declarations |
 | Git whitespace check | Passed |
 
 The build summary was:
 
 ```text
-✔ [3450/3453] Built LehnerEdges.GaussianMatrices (29s)
-✔ [3451/3453] Built LehnerEdges.Wishart (7.7s)
-✔ [3452/3453] Built LehnerEdges (2.8s)
-Build completed successfully (3453 jobs).
+⚠ [3466/3468] Built LehnerEdges.GaussianEdgeComparison (14s)
+✔ [3467/3468] Built LehnerEdges (4.4s)
+Build completed successfully (3468 jobs).
 ```
 
-The build emits upstream deprecation/style warnings and one local tactic-style
-warning. It emits no proof-placeholder warnings or errors. Mathlib and some
+The build emits upstream deprecation/style warnings and local tactic-style
+and unused-variable warnings. It emits no proof-placeholder warnings or errors. Mathlib and some
 external precompiled dependency artifacts were reused; this was not a rebuild
 of every external dependency from an empty cache. All project modules were
 compiled, and importing both external libraries in the same environment was
@@ -48,7 +47,7 @@ Quot.sound
 The successful result was:
 
 ```text
-PASS: recursively audited 195 project declarations; only propext, Classical.choice, Quot.sound permitted.
+PASS: recursively audited 417 project declarations; only propext, Classical.choice, Quot.sound permitted.
 ```
 
 The same file also runs explicit `#print axioms` commands on the assembled

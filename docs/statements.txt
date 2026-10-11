@@ -1,3 +1,4 @@
+warning: lean-sudakov: repository '/home/user/projects/lean-arxiv2606.21137/.lake/packages/lean-sudakov' has local changes
 @LehnerEdges.blockRow_mul_blockColumn : ∀ {n N M : ℕ} (B : Fin n → LehnerEdges.Mat N)
   (Γ : Fin n → Matrix (Fin N) (Fin M) ℂ), LehnerEdges.blockRow B * LehnerEdges.blockColumn Γ = ∑ i, B i * Γ i
 @LehnerEdges.blockRow_mul_adjoint : ∀ {n N : ℕ} (B : Fin n → LehnerEdges.Mat N),
@@ -20,6 +21,111 @@
       ∀ (C : LehnerEdges.Density N) (Γ : Fin n → Matrix (Fin N) (Fin M) ℂ),
         (A₀ * ↑C).trace.re + 2 / √↑M * LehnerEdges.traceNorm (∑ i, LehnerEdges.compressed (↑C) (A i) * Γ i) ≤
           LehnerEdges.rhoPlus A₀ A + 2 * max (‖LehnerEdges.blockColumn Γ‖ / √↑M - 1) 0 * √‖LehnerEdges.squareFunction A‖
+@LehnerEdges.linearSup_bddAbove : ∀ {E : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup E]
+  [inst_1 : InnerProductSpace ℝ E] (v : ι → E) (a : ι → ℝ) (K : NNReal),
+  (∀ (i : ι), ‖v i‖ ≤ ↑K) → BddAbove (Set.range a) → ∀ (x : E), BddAbove (Set.range fun i => a i + inner ℝ (v i) x)
+@LehnerEdges.le_linearSup : ∀ {E : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup E]
+  [inst_1 : InnerProductSpace ℝ E] (v : ι → E) (a : ι → ℝ) (K : NNReal),
+  (∀ (i : ι), ‖v i‖ ≤ ↑K) →
+    BddAbove (Set.range a) → ∀ (x : E) (i : ι), a i + inner ℝ (v i) x ≤ LehnerEdges.linearSup v a x
+@LehnerEdges.linearSup_lipschitz : ∀ {E : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup E]
+  [inst_1 : InnerProductSpace ℝ E] [Nonempty ι] (v : ι → E) (a : ι → ℝ) (K : NNReal),
+  (∀ (i : ι), ‖v i‖ ≤ ↑K) → BddAbove (Set.range a) → LipschitzWith K (LehnerEdges.linearSup v a)
+@LehnerEdges.linearSup_integrable : ∀ {E : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup E]
+  [inst_1 : InnerProductSpace ℝ E] [inst_2 : FiniteDimensional ℝ E] [inst_3 : MeasurableSpace E] [BorelSpace E]
+  [Nonempty ι] (v : ι → E) (a : ι → ℝ) (K : NNReal),
+  (∀ (i : ι), ‖v i‖ ≤ ↑K) →
+    BddAbove (Set.range a) → MeasureTheory.Integrable (LehnerEdges.linearSup v a) (ProbabilityTheory.stdGaussian E)
+@LehnerEdges.linearApprox_eq_vecMax : ∀ {E : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup E]
+  [inst_1 : InnerProductSpace ℝ E] [inst_2 : Countable ι] [inst_3 : DecidableEq ι] (v : ι → E) (a : ι → ℝ) (i₀ : ι)
+  (n : ℕ) (x : E), LehnerEdges.linearApprox v a i₀ n x = vecMax fun i => a ↑i + inner ℝ (v ↑i) x
+@LehnerEdges.linearApprox_lipschitz : ∀ {E : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup E]
+  [inst_1 : InnerProductSpace ℝ E] [inst_2 : Countable ι] [inst_3 : DecidableEq ι] (v : ι → E) (a : ι → ℝ) (K : NNReal),
+  (∀ (i : ι), ‖v i‖ ≤ ↑K) → ∀ (i₀ : ι) (n : ℕ), LipschitzWith K (LehnerEdges.linearApprox v a i₀ n)
+@LehnerEdges.tendsto_integral_linearApprox : ∀ {E : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup E]
+  [inst_1 : InnerProductSpace ℝ E] [inst_2 : Countable ι] [inst_3 : DecidableEq ι] [inst_4 : FiniteDimensional ℝ E]
+  [inst_5 : MeasurableSpace E] [BorelSpace E] [Nonempty ι] (v : ι → E) (a : ι → ℝ) (K : NNReal),
+  (∀ (i : ι), ‖v i‖ ≤ ↑K) →
+    BddAbove (Set.range a) →
+      ∀ (i₀ : ι),
+        Filter.Tendsto (fun n => ∫ (x : E), LehnerEdges.linearApprox v a i₀ n x ∂ProbabilityTheory.stdGaussian E)
+          Filter.atTop (nhds (∫ (x : E), LehnerEdges.linearSup v a x ∂ProbabilityTheory.stdGaussian E))
+@LehnerEdges.countable_linear_gaussian_comparison : ∀ {E : Type u_1} {F : Type u_2} {ι : Type u_3}
+  [inst : NormedAddCommGroup E] [inst_1 : InnerProductSpace ℝ E] [inst_2 : FiniteDimensional ℝ E]
+  [inst_3 : MeasurableSpace E] [BorelSpace E] [inst_5 : NormedAddCommGroup F] [inst_6 : InnerProductSpace ℝ F]
+  [inst_7 : FiniteDimensional ℝ F] [inst_8 : MeasurableSpace F] [BorelSpace F] [Countable ι] [Nonempty ι] (v : ι → E)
+  (w : ι → F) (a : ι → ℝ) (K L : NNReal),
+  (∀ (i : ι), ‖v i‖ ≤ ↑K) →
+    (∀ (i : ι), ‖w i‖ ≤ ↑L) →
+      BddAbove (Set.range a) →
+        (∀ (i j : ι), ‖v i - v j‖ ^ 2 ≤ ‖w i - w j‖ ^ 2) →
+          ∫ (x : E), LehnerEdges.linearSup v a x ∂ProbabilityTheory.stdGaussian E ≤
+            ∫ (y : F), LehnerEdges.linearSup w a y ∂ProbabilityTheory.stdGaussian F
+@LehnerEdges.linearSup_dense_eq : ∀ {E : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup E]
+  [inst_1 : InnerProductSpace ℝ E] [inst_2 : TopologicalSpace ι] [Nonempty ι] (v : ι → E) (a : ι → ℝ) (K : NNReal),
+  (∀ (i : ι), ‖v i‖ ≤ ↑K) →
+    BddAbove (Set.range a) →
+      Continuous v →
+        Continuous a →
+          ∀ (e : ℕ → ι), DenseRange e → ∀ (x : E), LehnerEdges.linearSup (v ∘ e) (a ∘ e) x = LehnerEdges.linearSup v a x
+@LehnerEdges.separable_linear_gaussian_comparison : ∀ {E : Type u_1} {F : Type u_2} {ι : Type u_3}
+  [inst : NormedAddCommGroup E] [inst_1 : InnerProductSpace ℝ E] [inst_2 : FiniteDimensional ℝ E]
+  [inst_3 : MeasurableSpace E] [BorelSpace E] [inst_5 : NormedAddCommGroup F] [inst_6 : InnerProductSpace ℝ F]
+  [inst_7 : FiniteDimensional ℝ F] [inst_8 : MeasurableSpace F] [BorelSpace F] [inst_10 : TopologicalSpace ι]
+  [TopologicalSpace.SeparableSpace ι] [Nonempty ι] (v : ι → E) (w : ι → F) (a : ι → ℝ) (K L : NNReal),
+  (∀ (i : ι), ‖v i‖ ≤ ↑K) →
+    (∀ (i : ι), ‖w i‖ ≤ ↑L) →
+      BddAbove (Set.range a) →
+        Continuous v →
+          Continuous w →
+            Continuous a →
+              (∀ (i j : ι), ‖v i - v j‖ ^ 2 ≤ ‖w i - w j‖ ^ 2) →
+                ∫ (x : E), LehnerEdges.linearSup v a x ∂ProbabilityTheory.stdGaussian E ≤
+                  ∫ (y : F), LehnerEdges.linearSup w a y ∂ProbabilityTheory.stdGaussian F
+@LehnerEdges.complexGaussianRealStack_apply : ∀ {N M : ℕ} (g : EuclideanSpace ℂ (Fin N × Fin M)) (i : Fin N) (j : Fin M)
+  (k : Fin 2),
+  ((LehnerEdges.complexGaussianRealStack N M) g).ofLp (finProdFinEquiv (i, k), j) =
+    ((LehnerEdges.complexRealification (Fin N × Fin M)) g).ofLp ((i, j), k)
+LehnerEdges.mixingMatrix_gram : ∀ (N : ℕ),
+  LehnerEdges.mixingMatrix N * (LehnerEdges.mixingMatrix N).conjTranspose = 2 • 1
+@LehnerEdges.mixingMatrix_norm : ∀ {N : ℕ} [NeZero N], ‖LehnerEdges.mixingMatrix N‖ = √2
+@LehnerEdges.complexGaussianMatrix_eq_mixing : ∀ {N M : ℕ} (g : EuclideanSpace ℂ (Fin N × Fin M)),
+  LehnerEdges.complexGaussianMatrix g =
+    (1 / √2) •
+      (LehnerEdges.mixingMatrix N *
+        (LehnerEdges.realMatrixOfVector ((LehnerEdges.complexGaussianRealStack N M) g)).map Complex.ofReal)
+@LehnerEdges.complexGaussianMatrix_norm_le_realStack : ∀ {N M : ℕ} [NeZero N] (g : EuclideanSpace ℂ (Fin N × Fin M)),
+  ‖LehnerEdges.complexGaussianMatrix g‖ ≤
+    ‖LehnerEdges.realMatrixOfVector ((LehnerEdges.complexGaussianRealStack N M) g)‖
+@LehnerEdges.integral_realStack_norm : ∀ {N M : ℕ},
+  ∫ (g : EuclideanSpace ℂ (Fin N × Fin M)),
+      ‖LehnerEdges.realMatrixOfVector
+          ((LehnerEdges.complexGaussianRealStack N M)
+            g)‖ ∂ProbabilityTheory.stdGaussian (EuclideanSpace ℂ (Fin N × Fin M)) =
+    ∫ (x : EuclideanSpace ℝ (Fin (N * 2) × Fin M)),
+      ‖LehnerEdges.realMatrixOfVector x‖ ∂ProbabilityTheory.stdGaussian (EuclideanSpace ℝ (Fin (N * 2) × Fin M))
+@LehnerEdges.complex_gaussian_matrix_norm_mean_le : ∀ {N M : ℕ} [NeZero N] [NeZero M],
+  ∫ (g : EuclideanSpace ℂ (Fin N × Fin M)),
+      ‖LehnerEdges.complexGaussianMatrix g‖ ∂ProbabilityTheory.stdGaussian (EuclideanSpace ℂ (Fin N × Fin M)) ≤
+    √(↑N * 2) + √↑M
+@LehnerEdges.integral_realStack_positive_excess : ∀ {N M : ℕ},
+  ∫ (g : EuclideanSpace ℂ (Fin N × Fin M)),
+      max (‖LehnerEdges.realMatrixOfVector ((LehnerEdges.complexGaussianRealStack N M) g)‖ - √↑M)
+        0 ∂ProbabilityTheory.stdGaussian (EuclideanSpace ℂ (Fin N × Fin M)) =
+    ∫ (x : EuclideanSpace ℝ (Fin (N * 2) × Fin M)),
+      max (‖LehnerEdges.realMatrixOfVector x‖ - √↑M)
+        0 ∂ProbabilityTheory.stdGaussian (EuclideanSpace ℝ (Fin (N * 2) × Fin M))
+@LehnerEdges.complex_gaussian_matrix_positive_excess_le : ∀ {N M : ℕ} [NeZero N] [NeZero M],
+  ∫ (g : EuclideanSpace ℂ (Fin N × Fin M)),
+      max (‖LehnerEdges.complexGaussianMatrix g‖ - √↑M)
+        0 ∂ProbabilityTheory.stdGaussian (EuclideanSpace ℂ (Fin N × Fin M)) ≤
+    √(↑N * 2) + 1
+LehnerEdges.normalized_positive_excess_eq : ∀ (x r : ℝ), 0 < r → max (x / r - 1) 0 = max (x - r) 0 / r
+@LehnerEdges.complex_gaussian_normalized_excess_le : ∀ {N M : ℕ} [NeZero N] [NeZero M],
+  ∫ (g : EuclideanSpace ℂ (Fin N × Fin M)),
+      max (‖LehnerEdges.complexGaussianMatrix g‖ / √↑M - 1)
+        0 ∂ProbabilityTheory.stdGaussian (EuclideanSpace ℂ (Fin N × Fin M)) ≤
+    (√(↑N * 2) + 1) / √↑M
 @LehnerEdges.frobeniusSq_sqrt : ∀ {N : ℕ} (P : LehnerEdges.Mat N),
   Matrix.PosSemidef P → LehnerEdges.frobeniusSq (CFC.sqrt P) = (Matrix.trace P).re
 @LehnerEdges.density_trace_le_norm : ∀ {N : ℕ} (C : LehnerEdges.Density N) (B : LehnerEdges.Mat N),
@@ -53,6 +159,14 @@
             (A₀ * ↑(C t)).trace.re +
               2 / √↑M * LehnerEdges.frobeniusPair (↑(W t)) (∑ i, LehnerEdges.compressed (↑(C t)) (A i) * Γ i)) ≤
           LehnerEdges.rhoPlus A₀ A + 2 * max (‖LehnerEdges.blockColumn Γ‖ / √↑M - 1) 0 * √‖LehnerEdges.squareFunction A‖
+@LehnerEdges.gaussianBlock_matrix : ∀ {n N M : ℕ} (g : LehnerEdges.GaussianCoordinates n N M),
+  (LehnerEdges.blockColumn fun i => (1 / √2) • LehnerEdges.familyMatrices g i) =
+    LehnerEdges.complexGaussianMatrix ((LehnerEdges.gaussianBlockIsometry n N M) g)
+@LehnerEdges.gaussianBlock_normalized_excess_le : ∀ {n N M : ℕ} [NeZero n] [NeZero N] [NeZero M],
+  ∫ (g : LehnerEdges.GaussianCoordinates n N M),
+      max (‖LehnerEdges.blockColumn fun i => (1 / √2) • LehnerEdges.familyMatrices g i‖ / √↑M - 1)
+        0 ∂ProbabilityTheory.stdGaussian (LehnerEdges.GaussianCoordinates n N M) ≤
+    (√(↑(n * N) * 2) + 1) / √↑M
 @LehnerEdges.processMap_apply : ∀ {E : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup E]
   [inst_1 : InnerProductSpace ℝ E] (v : ι → E) (x : E) (i : ι), (LehnerEdges.processMap v) x i = inner ℝ (v i) x
 @LehnerEdges.linear_gaussian_comparison : ∀ {E : Type u_1} {F : Type u_2} {ι : Type u_3} [inst : NormedAddCommGroup E]
@@ -105,6 +219,50 @@ LehnerEdges.standardGaussian_eq_stdGaussian : ∀ (d : ℕ),
       0 ≤ t →
         (ProbabilityTheory.stdGaussian E).real {x | t ≤ f x - ∫ (y : E), f y ∂ProbabilityTheory.stdGaussian E} ≤
           Real.exp (-t ^ 2 / (2 * ↑K ^ 2))
+@LehnerEdges.gaussianBlockExcess_integrable : ∀ {n N M : ℕ},
+  MeasureTheory.Integrable LehnerEdges.gaussianBlockExcess
+    (ProbabilityTheory.stdGaussian (LehnerEdges.GaussianCoordinates n N M))
+@LehnerEdges.purificationComplexSup_integrable : ∀ {n N M : ℕ} [NeZero N] [NeZero M] (A₀ : LehnerEdges.Mat N)
+  (A : Fin n → LehnerEdges.Mat N),
+  Matrix.IsHermitian A₀ →
+    (∀ (i : Fin n), Matrix.IsHermitian (A i)) →
+      MeasureTheory.Integrable
+        (LehnerEdges.linearSup
+          (fun u => LehnerEdges.purificationComplexCoefficient A (LehnerEdges.purificationMatrix u))
+          (LehnerEdges.purificationDrift A₀))
+        (ProbabilityTheory.stdGaussian (LehnerEdges.GaussianCoordinates n N M))
+@LehnerEdges.purificationComplexSup_pointwise : ∀ {n N M : ℕ} [NeZero N] [NeZero M] (A₀ : LehnerEdges.Mat N)
+  (A : Fin n → LehnerEdges.Mat N),
+  Matrix.IsHermitian A₀ →
+    (∀ (i : Fin n), Matrix.IsHermitian (A i)) →
+      ∀ (g : LehnerEdges.GaussianCoordinates n N M),
+        LehnerEdges.linearSup (fun u => LehnerEdges.purificationComplexCoefficient A (LehnerEdges.purificationMatrix u))
+            (LehnerEdges.purificationDrift A₀) g ≤
+          LehnerEdges.rhoPlus A₀ A + 2 * LehnerEdges.gaussianBlockExcess g * √‖LehnerEdges.squareFunction A‖
+@LehnerEdges.gaussian_purification_edge_bound : ∀ {n N M : ℕ} [NeZero n] [NeZero N] [NeZero M] (A₀ : LehnerEdges.Mat N)
+  (A : Fin n → LehnerEdges.Mat N),
+  Matrix.IsHermitian A₀ →
+    (∀ (i : Fin n), Matrix.PosSemidef (A i)) →
+      ∫ (x : LehnerEdges.GaussianCoordinates n M M),
+          LehnerEdges.linearSup (fun u => LehnerEdges.purificationGueCoefficient A (LehnerEdges.purificationMatrix u))
+            (LehnerEdges.purificationDrift A₀)
+            x ∂ProbabilityTheory.stdGaussian (LehnerEdges.GaussianCoordinates n M M) ≤
+        LehnerEdges.rhoPlus A₀ A + 2 * ((√(↑(n * N) * 2) + 1) / √↑M) * √‖LehnerEdges.squareFunction A‖
+LehnerEdges.realification_error_le_six : ∀ (d m : ℝ), 1 ≤ d → 0 ≤ m → 2 * ((√(d * 2) + 1) / √m) ≤ 6 * √(d / m)
+@LehnerEdges.gaussian_wishart_positive_excess_le_three : ∀ {N M : ℕ} [NeZero N] [NeZero M],
+  ∫ (g : EuclideanSpace ℂ (Fin N × Fin M)),
+      max (√‖LehnerEdges.wishartMatrix (LehnerEdges.complexGaussianMatrix g)‖ - 1)
+        0 ∂ProbabilityTheory.stdGaussian (EuclideanSpace ℂ (Fin N × Fin M)) ≤
+    3 * √(↑N / ↑M)
+@LehnerEdges.gaussian_purification_edge_bound_six : ∀ {n N M : ℕ} [NeZero n] [NeZero N] [NeZero M]
+  (A₀ : LehnerEdges.Mat N) (A : Fin n → LehnerEdges.Mat N),
+  Matrix.IsHermitian A₀ →
+    (∀ (i : Fin n), Matrix.PosSemidef (A i)) →
+      ∫ (x : LehnerEdges.GaussianCoordinates n M M),
+          LehnerEdges.linearSup (fun u => LehnerEdges.purificationGueCoefficient A (LehnerEdges.purificationMatrix u))
+            (LehnerEdges.purificationDrift A₀)
+            x ∂ProbabilityTheory.stdGaussian (LehnerEdges.GaussianCoordinates n M M) ≤
+        LehnerEdges.rhoPlus A₀ A + 6 * √(↑n * ↑N / ↑M) * √‖LehnerEdges.squareFunction A‖
 @LehnerEdges.euclidean_real_inner_eq_re : ∀ {ι : Type u_1} [inst : Fintype ι] (x y : EuclideanSpace ℂ ι),
   inner ℝ x y = (inner ℂ x y).re
 @LehnerEdges.matrixVector_matrixOfVector : ∀ {N M : ℕ} (g : EuclideanSpace ℂ (Fin N × Fin M)),
@@ -145,6 +303,35 @@ LehnerEdges.standardGaussian_eq_stdGaussian : ∀ (d : ℕ),
               ∫ (h : EuclideanSpace ℂ (Fin N × Fin M)),
                 ‖LehnerEdges.matrixOfVector h‖ ∂ProbabilityTheory.stdGaussian (EuclideanSpace ℂ (Fin N × Fin M))} ≤
       Real.exp (-t ^ 2 / 2)
+@LehnerEdges.stdGaussian_integral_norm_sq : ∀ {E : Type u_1} [inst : NormedAddCommGroup E]
+  [inst_1 : InnerProductSpace ℝ E] [inst_2 : FiniteDimensional ℝ E] [inst_3 : MeasurableSpace E] [BorelSpace E],
+  ∫ (x : E), ‖x‖ ^ 2 ∂ProbabilityTheory.stdGaussian E = ↑(Module.finrank ℝ E)
+@LehnerEdges.stdGaussian_integral_norm_le_sqrt_finrank : ∀ {E : Type u_1} [inst : NormedAddCommGroup E]
+  [inst_1 : InnerProductSpace ℝ E] [inst_2 : FiniteDimensional ℝ E] [inst_3 : MeasurableSpace E] [BorelSpace E],
+  ∫ (x : E), ‖x‖ ∂ProbabilityTheory.stdGaussian E ≤ √↑(Module.finrank ℝ E)
+@LehnerEdges.stdGaussian_integral_norm_sq_linearImage : ∀ {E : Type u_1} [inst : NormedAddCommGroup E]
+  [inst_1 : InnerProductSpace ℝ E] [inst_2 : FiniteDimensional ℝ E] [inst_3 : MeasurableSpace E] [BorelSpace E]
+  {F : Type u_2} [inst_5 : NormedAddCommGroup F] [inst_6 : InnerProductSpace ℝ F] [inst_7 : FiniteDimensional ℝ F]
+  [inst_8 : MeasurableSpace F] [BorelSpace F] (L : E →L[ℝ] F),
+  ∫ (x : E), ‖L x‖ ^ 2 ∂ProbabilityTheory.stdGaussian E = ∑ i, ‖(innerSL ℝ) ((stdOrthonormalBasis ℝ F) i) ∘SL L‖ ^ 2
+@LehnerEdges.stdGaussian_integral_norm_contraction_le : ∀ {E : Type u_1} [inst : NormedAddCommGroup E]
+  [inst_1 : InnerProductSpace ℝ E] [inst_2 : FiniteDimensional ℝ E] [inst_3 : MeasurableSpace E] [BorelSpace E]
+  {F : Type u_2} [inst_5 : NormedAddCommGroup F] [inst_6 : InnerProductSpace ℝ F] [FiniteDimensional ℝ F]
+  [inst_8 : MeasurableSpace F] [BorelSpace F] (L : E →L[ℝ] F),
+  ‖L‖ ≤ 1 → ∫ (x : E), ‖L x‖ ∂ProbabilityTheory.stdGaussian E ≤ √↑(Module.finrank ℝ F)
+@LehnerEdges.stdGaussian_integral_positive_centered_le_one : ∀ {E : Type u_1} [inst : NormedAddCommGroup E]
+  [inst_1 : InnerProductSpace ℝ E] [inst_2 : FiniteDimensional ℝ E] [inst_3 : MeasurableSpace E] [BorelSpace E]
+  {f : E → ℝ},
+  LipschitzWith 1 f →
+    ∫ (x : E), max (f x - ∫ (y : E), f y ∂ProbabilityTheory.stdGaussian E) 0 ∂ProbabilityTheory.stdGaussian E ≤ 1
+@LehnerEdges.stdGaussian_integral_positive_excess_le : ∀ {E : Type u_1} [inst : NormedAddCommGroup E]
+  [inst_1 : InnerProductSpace ℝ E] [inst_2 : FiniteDimensional ℝ E] [inst_3 : MeasurableSpace E] [BorelSpace E]
+  {f : E → ℝ},
+  LipschitzWith 1 f →
+    ∀ (a b : ℝ),
+      0 ≤ a →
+        ∫ (x : E), f x ∂ProbabilityTheory.stdGaussian E ≤ b + a →
+          ∫ (x : E), max (f x - b) 0 ∂ProbabilityTheory.stdGaussian E ≤ a + 1
 @LehnerEdges.posDef_inv_neg : ∀ {N : ℕ} {Z : LehnerEdges.Mat N}, Matrix.PosDef Z → (-Z)⁻¹ = -Z⁻¹
 @LehnerEdges.lehnerMatrix_neg_parameter : ∀ {N n : ℕ} (A₀ : LehnerEdges.Mat N) (A : Fin n → LehnerEdges.Mat N)
   {Z : LehnerEdges.Mat N}, Matrix.PosDef Z → LehnerEdges.lehnerMatrix A₀ A (-Z) = -LehnerEdges.lehnerMatrix (-A₀) A Z
@@ -194,6 +381,17 @@ LehnerEdges.standardGaussian_eq_stdGaussian : ∀ (d : ℕ),
   inner ℂ (LehnerEdges.matrixVector A) (LehnerEdges.matrixVector B) = (A.conjTranspose * B).trace
 @LehnerEdges.trace_cauchy_schwarz_sq : ∀ {N M : ℕ} (A B : Matrix (Fin N) (Fin M) ℂ),
   ‖(A.conjTranspose * B).trace‖ ^ 2 ≤ LehnerEdges.frobeniusSq A * LehnerEdges.frobeniusSq B
+@LehnerEdges.abs_matrixRayleigh_le_norm : ∀ {κ : Type u_1} [inst : Fintype κ] [inst_1 : DecidableEq κ]
+  (B : Matrix κ κ ℂ) (u : LehnerEdges.ComplexUnitSphere κ), |LehnerEdges.matrixRayleigh B u| ≤ ‖B‖
+@LehnerEdges.signedMatrixRayleigh_le_norm : ∀ {κ : Type u_1} [inst : Fintype κ] [inst_1 : DecidableEq κ]
+  (B : Matrix κ κ ℂ) (p : Bool × LehnerEdges.ComplexUnitSphere κ), LehnerEdges.signedMatrixRayleigh B p ≤ ‖B‖
+@LehnerEdges.eigenvector_matrixRayleigh : ∀ {κ : Type u_1} [inst : Fintype κ] [inst_1 : DecidableEq κ]
+  {B : Matrix κ κ ℂ} (hB : B.IsHermitian) (i : κ),
+  LehnerEdges.matrixRayleigh B ⟨hB.eigenvectorBasis i, ⋯⟩ = hB.eigenvalues i
+@LehnerEdges.norm_mem_range_signedMatrixRayleigh : ∀ {κ : Type u_1} [inst : Fintype κ] [inst_1 : DecidableEq κ]
+  [Nonempty κ] {B : Matrix κ κ ℂ}, B.IsHermitian → ‖B‖ ∈ Set.range (LehnerEdges.signedMatrixRayleigh B)
+@LehnerEdges.opNorm_eq_signed_rayleigh_sup : ∀ {κ : Type u_1} [inst : Fintype κ] [inst_1 : DecidableEq κ] [Nonempty κ]
+  {B : Matrix κ κ ℂ}, B.IsHermitian → ‖B‖ = sSup (Set.range (LehnerEdges.signedMatrixRayleigh B))
 @LehnerEdges.sum_frobeniusSq_mul : ∀ {n N M : ℕ} (A : Fin n → LehnerEdges.Mat N),
   (∀ (i : Fin n), Matrix.IsHermitian (A i)) →
     ∀ (S : Matrix (Fin N) (Fin M) ℂ),
@@ -228,6 +426,249 @@ LehnerEdges.standardGaussian_eq_stdGaussian : ∀ (d : ℕ),
                   ∫ (y : LehnerEdges.GaussianCoordinates n M M),
                     f y ∂ProbabilityTheory.stdGaussian (LehnerEdges.GaussianCoordinates n M M)} ≤
           Real.exp (-t ^ 2 / (2 * (√‖LehnerEdges.squareFunction A‖ / √↑M) ^ 2))
+@LehnerEdges.frobeniusSq_mul_supported : ∀ {L N M : ℕ} (X : Matrix (Fin L) (Fin N) ℂ) (W : Matrix (Fin N) (Fin M) ℂ),
+  X * W * W.conjTranspose = X → LehnerEdges.frobeniusSq (X * W) = LehnerEdges.frobeniusSq X
+@LehnerEdges.frobeniusSq_adjoint_mul_supported : ∀ {L N M : ℕ} (X : Matrix (Fin N) (Fin L) ℂ)
+  (W : Matrix (Fin N) (Fin M) ℂ),
+  W * W.conjTranspose * X = X → LehnerEdges.frobeniusSq (W.conjTranspose * X) = LehnerEdges.frobeniusSq X
+@LehnerEdges.supported_left_of_right : ∀ {N M : ℕ} {P : LehnerEdges.Mat N},
+  Matrix.IsHermitian P → ∀ (W : Matrix (Fin N) (Fin M) ℂ), P * W * W.conjTranspose = P → W * W.conjTranspose * P = P
+@LehnerEdges.frobeniusSq_compress_supported : ∀ {N M : ℕ} {P : LehnerEdges.Mat N},
+  Matrix.IsHermitian P →
+    ∀ (W : Matrix (Fin N) (Fin M) ℂ),
+      P * W * W.conjTranspose = P → LehnerEdges.frobeniusSq (W.conjTranspose * P * W) = LehnerEdges.frobeniusSq P
+@LehnerEdges.two_fiber_supported_increment : ∀ {N M : ℕ} {P Q : LehnerEdges.Mat N},
+  Matrix.PosSemidef P →
+    Matrix.PosSemidef Q →
+      ∀ (W V : Matrix (Fin N) (Fin M) ℂ),
+        P * W * W.conjTranspose = P →
+          Q * V * V.conjTranspose = Q →
+            LehnerEdges.frobeniusSq (W.conjTranspose * P * W - V.conjTranspose * Q * V) ≤
+              2 * LehnerEdges.frobeniusSq (P * W - Q * V)
+@LehnerEdges.polarContraction_support : ∀ {N M : ℕ} (S : Matrix (Fin N) (Fin M) ℂ),
+  CFC.sqrt (S * S.conjTranspose) * LehnerEdges.polarContraction S * (LehnerEdges.polarContraction S).conjTranspose =
+    CFC.sqrt (S * S.conjTranspose)
+@LehnerEdges.compressed_polar_support : ∀ {N M : ℕ} (S : Matrix (Fin N) (Fin M) ℂ) (A : LehnerEdges.Mat N),
+  LehnerEdges.compressed (S * S.conjTranspose) A * LehnerEdges.polarContraction S *
+      (LehnerEdges.polarContraction S).conjTranspose =
+    LehnerEdges.compressed (S * S.conjTranspose) A
+@LehnerEdges.compressed_mul_polar : ∀ {N M : ℕ} (S : Matrix (Fin N) (Fin M) ℂ) (A : LehnerEdges.Mat N),
+  LehnerEdges.compressed (S * S.conjTranspose) A * LehnerEdges.polarContraction S =
+    CFC.sqrt (S * S.conjTranspose) * A * S
+@LehnerEdges.polar_compressed_polar : ∀ {N M : ℕ} (S : Matrix (Fin N) (Fin M) ℂ) (A : LehnerEdges.Mat N),
+  (LehnerEdges.polarContraction S).conjTranspose * LehnerEdges.compressed (S * S.conjTranspose) A *
+      LehnerEdges.polarContraction S =
+    S.conjTranspose * A * S
+@LehnerEdges.purification_increment : ∀ {N M : ℕ} (A : LehnerEdges.Mat N),
+  Matrix.PosSemidef A →
+    ∀ (S T : Matrix (Fin N) (Fin M) ℂ),
+      LehnerEdges.frobeniusSq (S.conjTranspose * A * S - T.conjTranspose * A * T) ≤
+        2 * LehnerEdges.frobeniusSq (CFC.sqrt (S * S.conjTranspose) * A * S - CFC.sqrt (T * T.conjTranspose) * A * T)
+@LehnerEdges.purification_coefficient_increment : ∀ {n N M : ℕ} (A : Fin n → LehnerEdges.Mat N),
+  (∀ (i : Fin n), Matrix.PosSemidef (A i)) →
+    ∀ (S T : Matrix (Fin N) (Fin M) ℂ),
+      ‖LehnerEdges.purificationGueCoefficient A S - LehnerEdges.purificationGueCoefficient A T‖ ^ 2 ≤
+        ‖LehnerEdges.purificationComplexCoefficient A S - LehnerEdges.purificationComplexCoefficient A T‖ ^ 2
+@LehnerEdges.purification_compressed_hermitian : ∀ {N M : ℕ} (S : Matrix (Fin N) (Fin M) ℂ) {A : LehnerEdges.Mat N},
+  Matrix.IsHermitian A → Matrix.IsHermitian (LehnerEdges.compressed (S * S.conjTranspose) A)
+@LehnerEdges.purification_frobeniusSq : ∀ {N M : ℕ} (S : Matrix (Fin N) (Fin M) ℂ) {A : LehnerEdges.Mat N},
+  Matrix.IsHermitian A →
+    LehnerEdges.frobeniusSq (S.conjTranspose * A * S) =
+      LehnerEdges.frobeniusSq (LehnerEdges.compressed (S * S.conjTranspose) A)
+@LehnerEdges.purification_rectangular_frobeniusSq : ∀ {N M : ℕ} (S : Matrix (Fin N) (Fin M) ℂ) (A : LehnerEdges.Mat N),
+  LehnerEdges.frobeniusSq (CFC.sqrt (S * S.conjTranspose) * A * S) =
+    LehnerEdges.frobeniusSq (LehnerEdges.compressed (S * S.conjTranspose) A)
+@LehnerEdges.purification_sum_frobeniusSq_le : ∀ {n N M : ℕ} (A : Fin n → LehnerEdges.Mat N),
+  (∀ (i : Fin n), Matrix.IsHermitian (A i)) →
+    ∀ (S : Matrix (Fin N) (Fin M) ℂ),
+      LehnerEdges.frobeniusSq S = 1 →
+        ∑ i, LehnerEdges.frobeniusSq (S.conjTranspose * A i * S) ≤ ‖LehnerEdges.squareFunction A‖
+@LehnerEdges.purificationGueCoefficient_norm_le : ∀ {n N M : ℕ} (A : Fin n → LehnerEdges.Mat N),
+  (∀ (i : Fin n), Matrix.IsHermitian (A i)) →
+    ∀ (S : Matrix (Fin N) (Fin M) ℂ),
+      LehnerEdges.frobeniusSq S = 1 →
+        ‖LehnerEdges.purificationGueCoefficient A S‖ ≤ √‖LehnerEdges.squareFunction A‖ / √↑M
+@LehnerEdges.purificationComplexCoefficient_norm_le : ∀ {n N M : ℕ} (A : Fin n → LehnerEdges.Mat N),
+  (∀ (i : Fin n), Matrix.IsHermitian (A i)) →
+    ∀ (S : Matrix (Fin N) (Fin M) ℂ),
+      LehnerEdges.frobeniusSq S = 1 →
+        ‖LehnerEdges.purificationComplexCoefficient A S‖ ≤ √2 / √↑M * √‖LehnerEdges.squareFunction A‖
+@LehnerEdges.continuous_sqrt_gram : ∀ {N M : ℕ}, Continuous fun S => CFC.sqrt (S * S.conjTranspose)
+@LehnerEdges.continuous_purificationGueCoefficient : ∀ {n N M : ℕ} (A : Fin n → LehnerEdges.Mat N),
+  Continuous (LehnerEdges.purificationGueCoefficient A)
+@LehnerEdges.continuous_purificationComplexCoefficient : ∀ {n N M : ℕ} (A : Fin n → LehnerEdges.Mat N),
+  Continuous (LehnerEdges.purificationComplexCoefficient A)
+@LehnerEdges.familyMatrices_familyVector : ∀ {n N M : ℕ} (B : Fin n → Matrix (Fin N) (Fin M) ℂ),
+  LehnerEdges.familyMatrices (LehnerEdges.familyVector B) = B
+@LehnerEdges.familyVector_real_inner : ∀ {n N M : ℕ} (B D : Fin n → Matrix (Fin N) (Fin M) ℂ),
+  inner ℝ (LehnerEdges.familyVector B) (LehnerEdges.familyVector D) = ∑ i, LehnerEdges.frobeniusPair (B i) (D i)
+@LehnerEdges.frobeniusPair_smul_right : ∀ {N M : ℕ} (W T : Matrix (Fin N) (Fin M) ℂ) (c : ℝ),
+  LehnerEdges.frobeniusPair W (c • T) = c * LehnerEdges.frobeniusPair W T
+@LehnerEdges.frobeniusPair_sum : ∀ {n N M : ℕ} (W : Matrix (Fin N) (Fin M) ℂ) (T : Fin n → Matrix (Fin N) (Fin M) ℂ),
+  LehnerEdges.frobeniusPair W (∑ i, T i) = ∑ i, LehnerEdges.frobeniusPair W (T i)
+@LehnerEdges.frobeniusPair_mul_left : ∀ {N M : ℕ} (B : LehnerEdges.Mat N),
+  Matrix.IsHermitian B →
+    ∀ (W T : Matrix (Fin N) (Fin M) ℂ), LehnerEdges.frobeniusPair (B * W) T = LehnerEdges.frobeniusPair W (B * T)
+@LehnerEdges.purification_complex_pair : ∀ {n N M : ℕ} (A : Fin n → LehnerEdges.Mat N),
+  (∀ (i : Fin n), Matrix.IsHermitian (A i)) →
+    ∀ (S : Matrix (Fin N) (Fin M) ℂ) (g : LehnerEdges.GaussianCoordinates n N M),
+      inner ℝ (LehnerEdges.purificationComplexCoefficient A S) g =
+        2 / √↑M *
+          LehnerEdges.frobeniusPair (LehnerEdges.polarContraction S)
+            (∑ i, LehnerEdges.compressed (S * S.conjTranspose) (A i) * (1 / √2) • LehnerEdges.familyMatrices g i)
+@LehnerEdges.purification_pair_le_traceNorm : ∀ {N M : ℕ} (S T : Matrix (Fin N) (Fin M) ℂ),
+  LehnerEdges.frobeniusPair (LehnerEdges.polarContraction S) T ≤ LehnerEdges.traceNorm T
+@LehnerEdges.purification_comparison_pointwise : ∀ {n N M : ℕ} [NeZero N] (A₀ : LehnerEdges.Mat N)
+  (A : Fin n → LehnerEdges.Mat N),
+  Matrix.IsHermitian A₀ →
+    (∀ (i : Fin n), Matrix.IsHermitian (A i)) →
+      ∀ (u : LehnerEdges.UnitPurification N M) (g : LehnerEdges.GaussianCoordinates n N M),
+        LehnerEdges.purificationDrift A₀ u +
+            inner ℝ (LehnerEdges.purificationComplexCoefficient A (LehnerEdges.purificationMatrix u)) g ≤
+          LehnerEdges.rhoPlus A₀ A +
+            2 * max (‖LehnerEdges.blockColumn fun i => (1 / √2) • LehnerEdges.familyMatrices g i‖ / √↑M - 1) 0 *
+              √‖LehnerEdges.squareFunction A‖
+@LehnerEdges.purificationMatrix_frobeniusSq : ∀ {N M : ℕ} (u : LehnerEdges.UnitPurification N M),
+  LehnerEdges.frobeniusSq (LehnerEdges.purificationMatrix u) = 1
+@LehnerEdges.continuous_purificationMatrix : ∀ {N M : ℕ}, Continuous LehnerEdges.purificationMatrix
+@LehnerEdges.continuous_purificationDrift : ∀ {N M : ℕ} (A₀ : LehnerEdges.Mat N),
+  Continuous (LehnerEdges.purificationDrift A₀)
+@LehnerEdges.purificationDrift_bddAbove : ∀ {N M : ℕ} (A₀ : LehnerEdges.Mat N),
+  Matrix.IsHermitian A₀ → BddAbove (Set.range (LehnerEdges.purificationDrift A₀))
+@LehnerEdges.full_purification_comparison : ∀ {n N M : ℕ} [NeZero N] [NeZero M] (A₀ : LehnerEdges.Mat N)
+  (A : Fin n → LehnerEdges.Mat N),
+  Matrix.IsHermitian A₀ →
+    (∀ (i : Fin n), Matrix.PosSemidef (A i)) →
+      ∫ (x : LehnerEdges.GaussianCoordinates n M M),
+          LehnerEdges.linearSup (fun u => LehnerEdges.purificationGueCoefficient A (LehnerEdges.purificationMatrix u))
+            (LehnerEdges.purificationDrift A₀)
+            x ∂ProbabilityTheory.stdGaussian (LehnerEdges.GaussianCoordinates n M M) ≤
+        ∫ (y : LehnerEdges.GaussianCoordinates n N M),
+          LehnerEdges.linearSup
+            (fun u => LehnerEdges.purificationComplexCoefficient A (LehnerEdges.purificationMatrix u))
+            (LehnerEdges.purificationDrift A₀) y ∂ProbabilityTheory.stdGaussian (LehnerEdges.GaussianCoordinates n N M)
+@LehnerEdges.realOuterVector_inner : ∀ {N M : ℕ} (u u' : EuclideanSpace ℝ (Fin N)) (v v' : EuclideanSpace ℝ (Fin M)),
+  inner ℝ (LehnerEdges.realOuterVector u v) (LehnerEdges.realOuterVector u' v') = inner ℝ u u' * inner ℝ v v'
+@LehnerEdges.realJoinVector_inner : ∀ {N M : ℕ} (u u' : EuclideanSpace ℝ (Fin N)) (v v' : EuclideanSpace ℝ (Fin M)),
+  inner ℝ (LehnerEdges.realJoinVector u v) (LehnerEdges.realJoinVector u' v') = inner ℝ u u' + inner ℝ v v'
+@LehnerEdges.realOuterVector_norm_sq : ∀ {N M : ℕ} (u : EuclideanSpace ℝ (Fin N)) (v : EuclideanSpace ℝ (Fin M)),
+  ‖LehnerEdges.realOuterVector u v‖ ^ 2 = ‖u‖ ^ 2 * ‖v‖ ^ 2
+@LehnerEdges.realJoinVector_norm_sq : ∀ {N M : ℕ} (u : EuclideanSpace ℝ (Fin N)) (v : EuclideanSpace ℝ (Fin M)),
+  ‖LehnerEdges.realJoinVector u v‖ ^ 2 = ‖u‖ ^ 2 + ‖v‖ ^ 2
+@LehnerEdges.real_matrix_process_increment : ∀ {N M : ℕ}
+  (p q : LehnerEdges.RealUnitSphere N × LehnerEdges.RealUnitSphere M),
+  ‖LehnerEdges.realOuterVector ↑p.1 ↑p.2 - LehnerEdges.realOuterVector ↑q.1 ↑q.2‖ ^ 2 ≤
+    ‖LehnerEdges.realJoinVector ↑p.1 ↑p.2 - LehnerEdges.realJoinVector ↑q.1 ↑q.2‖ ^ 2
+@LehnerEdges.real_matrix_gaussian_comparison : ∀ {N M : ℕ} [NeZero N] [NeZero M],
+  ∫ (x : EuclideanSpace ℝ (Fin N × Fin M)),
+      LehnerEdges.linearSup (fun p => LehnerEdges.realOuterVector ↑p.1 ↑p.2) (fun x => 0)
+        x ∂ProbabilityTheory.stdGaussian (EuclideanSpace ℝ (Fin N × Fin M)) ≤
+    ∫ (y : EuclideanSpace ℝ (Fin N ⊕ Fin M)),
+      LehnerEdges.linearSup (fun p => LehnerEdges.realJoinVector ↑p.1 ↑p.2) (fun x => 0)
+        y ∂ProbabilityTheory.stdGaussian (EuclideanSpace ℝ (Fin N ⊕ Fin M))
+@LehnerEdges.realProjections_norm_sq : ∀ {N M : ℕ} (x : EuclideanSpace ℝ (Fin N ⊕ Fin M)),
+  ‖LehnerEdges.realLeftProjection x‖ ^ 2 + ‖LehnerEdges.realRightProjection x‖ ^ 2 = ‖x‖ ^ 2
+@LehnerEdges.realLeftProjection_norm_le : ∀ {N M : ℕ}, ‖LehnerEdges.realLeftProjection‖ ≤ 1
+@LehnerEdges.realRightProjection_norm_le : ∀ {N M : ℕ}, ‖LehnerEdges.realRightProjection‖ ≤ 1
+@LehnerEdges.realJoinVector_inner_split : ∀ {N M : ℕ} (u : EuclideanSpace ℝ (Fin N)) (v : EuclideanSpace ℝ (Fin M))
+  (x : EuclideanSpace ℝ (Fin N ⊕ Fin M)),
+  inner ℝ (LehnerEdges.realJoinVector u v) x =
+    inner ℝ u (LehnerEdges.realLeftProjection x) + inner ℝ v (LehnerEdges.realRightProjection x)
+@LehnerEdges.real_join_process_le : ∀ {N M : ℕ} [NeZero N] [NeZero M] (x : EuclideanSpace ℝ (Fin N ⊕ Fin M)),
+  LehnerEdges.linearSup (fun p => LehnerEdges.realJoinVector ↑p.1 ↑p.2) (fun x => 0) x ≤
+    ‖LehnerEdges.realLeftProjection x‖ + ‖LehnerEdges.realRightProjection x‖
+@LehnerEdges.real_matrix_process_mean_le : ∀ {N M : ℕ} [NeZero N] [NeZero M],
+  ∫ (x : EuclideanSpace ℝ (Fin N × Fin M)),
+      LehnerEdges.linearSup (fun p => LehnerEdges.realOuterVector ↑p.1 ↑p.2) (fun x => 0)
+        x ∂ProbabilityTheory.stdGaussian (EuclideanSpace ℝ (Fin N × Fin M)) ≤
+    √↑N + √↑M
+@LehnerEdges.exists_realUnit_inner_eq_norm : ∀ {N : ℕ} [NeZero N] (x : EuclideanSpace ℝ (Fin N)),
+  ∃ u, inner ℝ (↑u) x = ‖x‖
+@LehnerEdges.realOuterVector_inner_mulVec : ∀ {N M : ℕ} (u : EuclideanSpace ℝ (Fin N)) (v : EuclideanSpace ℝ (Fin M))
+  (x : EuclideanSpace ℝ (Fin N × Fin M)),
+  inner ℝ (LehnerEdges.realOuterVector u v) x =
+    inner ℝ u ((EuclideanSpace.equiv (Fin N) ℝ).symm ((LehnerEdges.realMatrixOfVector x).mulVec v.ofLp))
+@LehnerEdges.realOuterVector_unit_norm : ∀ {N M : ℕ} (p : LehnerEdges.RealUnitSphere N × LehnerEdges.RealUnitSphere M),
+  ‖LehnerEdges.realOuterVector ↑p.1 ↑p.2‖ ≤ 1
+@LehnerEdges.real_matrix_process_eq_norm : ∀ {N M : ℕ} [NeZero N] [NeZero M] (x : EuclideanSpace ℝ (Fin N × Fin M)),
+  LehnerEdges.linearSup (fun p => LehnerEdges.realOuterVector ↑p.1 ↑p.2) (fun x => 0) x =
+    ‖LehnerEdges.realMatrixOfVector x‖
+@LehnerEdges.real_gaussian_matrix_norm_mean_le : ∀ {N M : ℕ} [NeZero N] [NeZero M],
+  ∫ (x : EuclideanSpace ℝ (Fin N × Fin M)),
+      ‖LehnerEdges.realMatrixOfVector x‖ ∂ProbabilityTheory.stdGaussian (EuclideanSpace ℝ (Fin N × Fin M)) ≤
+    √↑N + √↑M
+@LehnerEdges.realMatrixOfVector_norm_lipschitz : ∀ {N M : ℕ} [NeZero N] [NeZero M],
+  LipschitzWith 1 fun x => ‖LehnerEdges.realMatrixOfVector x‖
+@LehnerEdges.real_gaussian_matrix_positive_excess_le : ∀ {N M : ℕ} [NeZero N] [NeZero M],
+  ∫ (x : EuclideanSpace ℝ (Fin N × Fin M)),
+      max (‖LehnerEdges.realMatrixOfVector x‖ - √↑M)
+        0 ∂ProbabilityTheory.stdGaussian (EuclideanSpace ℝ (Fin N × Fin M)) ≤
+    √↑N + 1
+@LehnerEdges.vectorReIm_norm_sq : ∀ {ι : Type u_1} [inst : Fintype ι] (z : EuclideanSpace ℂ ι),
+  ‖LehnerEdges.vectorRe z‖ ^ 2 + ‖LehnerEdges.vectorIm z‖ ^ 2 = ‖z‖ ^ 2
+@LehnerEdges.complexify_mulVec_re : ∀ {ι : Type u_1} {κ : Type u_2} [inst : Fintype ι] [inst_1 : Fintype κ]
+  (A : Matrix ι κ ℝ) (z : EuclideanSpace ℂ κ),
+  LehnerEdges.vectorRe ((EuclideanSpace.equiv ι ℂ).symm ((A.map Complex.ofReal).mulVec z.ofLp)) =
+    (EuclideanSpace.equiv ι ℝ).symm (A.mulVec (LehnerEdges.vectorRe z).ofLp)
+@LehnerEdges.complexify_mulVec_im : ∀ {ι : Type u_1} {κ : Type u_2} [inst : Fintype ι] [inst_1 : Fintype κ]
+  (A : Matrix ι κ ℝ) (z : EuclideanSpace ℂ κ),
+  LehnerEdges.vectorIm ((EuclideanSpace.equiv ι ℂ).symm ((A.map Complex.ofReal).mulVec z.ofLp)) =
+    (EuclideanSpace.equiv ι ℝ).symm (A.mulVec (LehnerEdges.vectorIm z).ofLp)
+@LehnerEdges.complexify_opNorm_le : ∀ {ι : Type u_1} {κ : Type u_2} [inst : Fintype ι] [inst_1 : Fintype κ]
+  [DecidableEq ι] [inst_3 : DecidableEq κ] (A : Matrix ι κ ℝ), ‖A.map Complex.ofReal‖ ≤ ‖A‖
+@LehnerEdges.complexRealification_zero : ∀ {ι : Type u_1} [inst : Fintype ι] (z : EuclideanSpace ℂ ι) (i : ι),
+  ((LehnerEdges.complexRealification ι) z).ofLp (i, 0) = (z.ofLp i).re
+@LehnerEdges.complexRealification_one : ∀ {ι : Type u_1} [inst : Fintype ι] (z : EuclideanSpace ℂ ι) (i : ι),
+  ((LehnerEdges.complexRealification ι) z).ofLp (i, 1) = (z.ofLp i).im
+@LehnerEdges.complexRealification_gaussian : ∀ {ι : Type u_1} [inst : Fintype ι],
+  MeasureTheory.Measure.map (⇑(LehnerEdges.complexRealification ι))
+      (ProbabilityTheory.stdGaussian (EuclideanSpace ℂ ι)) =
+    ProbabilityTheory.stdGaussian (EuclideanSpace ℝ (ι × Fin 2))
+@LehnerEdges.signEmbed_norm_sq : ∀ {ι : Type u_1} [inst : Fintype ι] (b : Bool) (v : EuclideanSpace ℂ ι),
+  ‖LehnerEdges.signEmbed b v‖ ^ 2 = ‖v‖ ^ 2
+@LehnerEdges.signEmbed_norm : ∀ {ι : Type u_1} [inst : Fintype ι] (b : Bool) (v : EuclideanSpace ℂ ι),
+  ‖LehnerEdges.signEmbed b v‖ = ‖v‖
+@LehnerEdges.signEmbed_sub_same : ∀ {ι : Type u_1} [inst : Fintype ι] (b : Bool) (v w : EuclideanSpace ℂ ι),
+  LehnerEdges.signEmbed b v - LehnerEdges.signEmbed b w = LehnerEdges.signEmbed b (v - w)
+@LehnerEdges.signEmbed_sub_distinct : ∀ {ι : Type u_1} [inst : Fintype ι] (b c : Bool),
+  b ≠ c → ∀ (v w : EuclideanSpace ℂ ι), ‖LehnerEdges.signEmbed b v - LehnerEdges.signEmbed c w‖ ^ 2 = ‖v‖ ^ 2 + ‖w‖ ^ 2
+@LehnerEdges.norm_add_sq_le_twice : ∀ {E : Type u_1} [inst : NormedAddCommGroup E] (x y : E),
+  ‖x + y‖ ^ 2 ≤ 2 * (‖x‖ ^ 2 + ‖y‖ ^ 2)
+@LehnerEdges.signed_increment : ∀ {E : Type u_1} {ι : Type u_2} {κ : Type u_3} [inst : NormedAddCommGroup E]
+  [inst_1 : Fintype κ] (v : ι → E) (w : ι → EuclideanSpace ℂ κ),
+  (∀ (i j : ι), ‖v i - v j‖ ^ 2 ≤ ‖w i - w j‖ ^ 2) →
+    (∀ (i : ι), ‖w i‖ ^ 2 = 2 * ‖v i‖ ^ 2) →
+      ∀ (p q : Bool × ι),
+        ‖LehnerEdges.signVector p.1 (v p.2) - LehnerEdges.signVector q.1 (v q.2)‖ ^ 2 ≤
+          ‖LehnerEdges.signEmbed p.1 (w p.2) - LehnerEdges.signEmbed q.1 (w q.2)‖ ^ 2
+@LehnerEdges.purification_coefficient_norm_ratio : ∀ {n N M : ℕ} (A : Fin n → LehnerEdges.Mat N),
+  (∀ (i : Fin n), Matrix.IsHermitian (A i)) →
+    ∀ (S : Matrix (Fin N) (Fin M) ℂ),
+      ‖LehnerEdges.purificationComplexCoefficient A S‖ ^ 2 = 2 * ‖LehnerEdges.purificationGueCoefficient A S‖ ^ 2
+@LehnerEdges.signed_purification_increment : ∀ {n N M : ℕ} (A : Fin n → LehnerEdges.Mat N),
+  (∀ (i : Fin n), Matrix.PosSemidef (A i)) →
+    ∀ (p q : Bool × LehnerEdges.UnitPurification N M),
+      ‖LehnerEdges.signVector p.1 (LehnerEdges.purificationGueCoefficient A (LehnerEdges.purificationMatrix p.2)) -
+              LehnerEdges.signVector q.1
+                (LehnerEdges.purificationGueCoefficient A (LehnerEdges.purificationMatrix q.2))‖ ^
+          2 ≤
+        ‖LehnerEdges.signEmbed p.1 (LehnerEdges.purificationComplexCoefficient A (LehnerEdges.purificationMatrix p.2)) -
+              LehnerEdges.signEmbed q.1
+                (LehnerEdges.purificationComplexCoefficient A (LehnerEdges.purificationMatrix q.2))‖ ^
+          2
+@LehnerEdges.continuous_signEmbed : ∀ {ι : Type u_1} [inst : Fintype ι] (b : Bool), Continuous (LehnerEdges.signEmbed b)
+@LehnerEdges.full_signed_purification_comparison : ∀ {n N M : ℕ} [NeZero N] [NeZero M] (A₀ : LehnerEdges.Mat N)
+  (A : Fin n → LehnerEdges.Mat N),
+  Matrix.IsHermitian A₀ →
+    (∀ (i : Fin n), Matrix.PosSemidef (A i)) →
+      ∫ (x : LehnerEdges.GaussianCoordinates n M M),
+          LehnerEdges.linearSup (LehnerEdges.signedPurificationGueCoefficient A)
+            (LehnerEdges.signedPurificationDrift A₀)
+            x ∂ProbabilityTheory.stdGaussian (LehnerEdges.GaussianCoordinates n M M) ≤
+        ∫ (y : EuclideanSpace ℂ (Bool × Fin n × Fin N × Fin M)),
+          LehnerEdges.linearSup (LehnerEdges.signedPurificationComplexCoefficient A)
+            (LehnerEdges.signedPurificationDrift A₀)
+            y ∂ProbabilityTheory.stdGaussian (EuclideanSpace ℂ (Bool × Fin n × Fin N × Fin M))
 @LehnerEdges.frobeniusSq_mul_coisometry : ∀ {L N M : ℕ} (X : Matrix (Fin L) (Fin N) ℂ) (W : LehnerEdges.Stiefel N M),
   LehnerEdges.frobeniusSq (X * ↑W) = LehnerEdges.frobeniusSq X
 @LehnerEdges.frobeniusSq_coisometry_adjoint_mul : ∀ {L N M : ℕ} (X : Matrix (Fin N) (Fin L) ℂ)

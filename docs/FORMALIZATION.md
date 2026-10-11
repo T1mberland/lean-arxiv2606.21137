@@ -71,22 +71,26 @@ The source files contain the full proof terms as tactic proofs.
 |---|---|---|
 | Section 2: matrix norms and GUE normalization | `matrixVector_norm_sq`, `matrixVector_inner`, `gueProjection_pair`, `gue_mean_pair`, `gue_variance_pair`, `gue_pair_law` | Exact Frobenius/linear-pairing identities and scalar Gaussian laws; joint entry-law theorem not yet stated |
 | Lemma 2.1: trace variational formula | `abs_frobeniusPair_le_traceNorm`, `polarContraction_pair`, `traceNorm_eq_sup_contractions` | **Contraction version only**: attained supremum over `‖W‖ ≤ 1`. The paper's coisometry equality, requiring `M ≥ N`, remains open |
-| Theorem 2.3: Sudakov–Fernique with drift | `linear_gaussian_comparison`; external `sudakov_fernique_drift` | All finite restrictions, arbitrary deterministic drift, explicitly constructed Gaussian laws; compact-index extension not proved here |
+| Theorem 2.3: Sudakov–Fernique with drift | `linear_gaussian_comparison`; external `sudakov_fernique_drift` | Finite comparison and the continuous separable-index extension `separable_linear_gaussian_comparison`, with Gaussian integrability proved from deterministic coefficient bounds |
 | Lemma 3.2: weighted trace AM–GM | `trace_amgm`, `weighted_trace_amgm` | Exact **lower inequality** for every positive definite `Z`, including singular PSD `C,D`; infimum equality and approximation for equality remain open |
 | Remark 3.6: elementary minimax direction | `densityFunctional_le_lehnerMatrix`, `densityFunctional_le_rhoPlus`, `rhoMinus_le_densityFunctional` | Exact elementary density inequalities for both variational edges; all coefficients may be Hermitian, positivity unnecessary |
 | Propositions 3.3 and 3.5: full density duality | — | Equality and left-edge dual formula not proved |
 | Lemma 4.1: two-fiber increment | `positive_cross_bound`, `two_fiber_stiefel_increment` | Exact constant `2`, PSD `P,Q`, arbitrary two coisometries |
 | Lemma 4.2: density–Stiefel representation | — | Not proved |
-| Proposition 4.3: increment calculation and comparison | `compressed_increment`, `coefficient_increment`, `finite_density_stiefel_comparison` | Every nonempty finite restriction, exact scaling and common drift; full supremum/eigenvalue comparison not proved |
+| Proposition 4.3: increment calculation and comparison | `compressed_increment`, `coefficient_increment`, `finite_density_stiefel_comparison` | Finite restrictions and `full_purification_comparison` on the entire Frobenius unit sphere, exact scaling and common drift; identification with the Kronecker matrix spectral edge remains open |
 | Section 5: trace ideal and singular-value estimates | `traceNorm_mul_le`, `traceNorm_mul_le_frobenius`, `polarContraction_factorization`, `opNorm_le_frobenius` | Rectangular estimates with no full-rank assumptions; proved directly using CFC and Frobenius Cauchy–Schwarz |
 | Proposition 5.2: block algebra and `B_max` bound | `blockRow_mul_blockColumn`, `compressed_block_energy`, `compressed_block_traceNorm`, `density_energy_bound` | Exact block dimension `n*N`; exact bound `Tr sqrt E(C) ≤ sqrt ‖∑ Aᵢ²‖` |
 | Proposition 5.2: uniform pointwise control | `pointwise_comparison_bound`, `finite_block_process_bound` | Deterministic part only, exact positive-part expression; no Wishart expectation hidden in assumptions |
-| Lemma 5.1: Wishart identities and concentration | `wishartMatrix_posSemidef`, `wishart_sqrt_norm`, `complex_gaussian_matrix_norm_concentration` | Exact Gram norm identity and Gaussian concentration at actual mean. **The positive-part expectation bound with constant 3 is not proved** |
-| Proposition 5.3 / Proposition 6.1 | — | Expected upper/lower edge bounds with constant 6 not proved |
+| Lemma 5.1: Wishart identities and concentration | `wishartMatrix_posSemidef`, `wishart_sqrt_norm`, `complex_gaussian_matrix_norm_concentration` | Exact Gram norm identity, concentration, and `gaussian_wishart_positive_excess_le_three`: the positive-excess expectation with the paper’s constant 3. The sharp complex mean and the tail centered at `sqrt M + sqrt d` remain open |
+| Proposition 5.3 / Proposition 6.1 | `gaussian_purification_edge_bound_six` | Constant 6 for the full quadratic process; expected matrix spectral-edge statements still await the matrix-model identification |
 | Lemma 7.1: spectral Lipschitz control | `abs_lambdaMax_sub_le`, `abs_lambdaMin_sub_le`, `gueCoefficient_norm_le`, `finite_spectral_process_lipschitz` | Exact operator Lipschitz estimates and exact `σ/√M` coefficient bound for every finite spectral-process restriction. Full Kronecker model Lipschitz statement not proved |
 | Section 7: Gaussian concentration | `stdGaussian_integrable_of_lipschitz`, `stdGaussian_hasSubgaussianMGF`, `stdGaussian_measure_ge_le`, `finite_spectral_process_concentration` | All globally Lipschitz functions on any finite real Hilbert space; finite spectral-process application has exact variance scale |
 | Sections 3 and 6: variational sign symmetry | `rhoMinus_eq_neg_rhoPlus`, `rhoStar_eq_max_rhoPlus` | Exact identities `ρ₋(A₀,A) = -ρ₊(-A₀,A)` and `ρ* = max(ρ₊(A₀,A),ρ₊(-A₀,A))` |
-| Section 7: norm versus edges | `lambdaMax_neg`, `lambdaMin_neg`, `opNorm_eq_max_edges` | Exact spectral identities for Hermitian matrices in nonzero dimension |
+| Alternative two-sign comparison | `full_signed_purification_comparison`, `signed_purification_increment` | Compares both signs simultaneously to independent rectangular Gaussian blocks, with actual Gaussian laws and drift |
+| Alternative singular purification | `polarContraction_support`, `two_fiber_supported_increment`, `purification_increment` | Avoids coisometry extension; works with every rectangular purification, including singular ones |
+| Real Gaussian mean bound | `real_matrix_process_eq_norm`, `real_gaussian_matrix_norm_mean_le` | Actual real matrix operator norm, mean at most `sqrt N + sqrt M` |
+| Gaussian positive excess and realification | `stdGaussian_integral_positive_centered_le_one`, `complex_gaussian_matrix_norm_mean_le`, `complex_gaussian_normalized_excess_le` | Explicit exponential-moment proof and realification; complex mean bound is `sqrt (2N) + sqrt M`, sufficient for the exact constant-3 positive-excess estimate |
+| Section 7: norm versus edges | `lambdaMax_neg`, `lambdaMin_neg`, `opNorm_eq_max_edges` | Exact spectral identities for Hermitian matrices in nonzero dimension; `opNorm_eq_signed_rayleigh_sup` also proves the signed unit-vector Rayleigh supremum formula |
 | Theorem 7.2 | — | **Not proved**, including its constant 9 |
 | Corollaries 1.2 and 1.3 / Section 8 / Section 9 | — | Asymptotic statements, covariance/Kraus invariance, and signed counterexamples not formalized |
 | Theorem 1.1: free spectral-edge identification | — | Not formalized and not assumed as an axiom |
@@ -151,6 +155,38 @@ For `M > 0` this is the paper's `exp(-M*t²/(2*‖∑ Aᵢ²‖))`. When the var
 parameter vanishes, the displayed total-division bound is still valid but
 trivial; no special zero-variance tail claim is inferred from it.
 
+The direct comparison uses unit Frobenius purifications `S`, with `C = S S*`,
+and proves directly
+
+\[
+ v_S=M^{-1/2}\operatorname{vec}_i(S^*A_iS),\qquad
+ w_S=\sqrt{2/M}\operatorname{vec}_i(\sqrt{SS^*}A_iS),\qquad
+ \|v_S-v_T\|^2\le\|w_S-w_T\|^2.
+\]
+
+These coefficients are continuous even at rank-deficient matrices. Their
+bounds prove integrability of the full supremum. For positive dimensions,
+PSD `A_i`, and Hermitian `A_0`, `gaussian_purification_edge_bound_six` proves
+
+\[
+ \mathbb E\sup_{\|S\|_F=1}
+ [\operatorname{Re}\operatorname{Tr}(A_0SS^*)+\langle v_S,g\rangle]
+ \le\rho_+ +6\sqrt{nN/M}\,\sigma.
+\]
+
+This is an actual continuous supremum and expectation, with no assumed
+moment or measurability hypotheses. Its matrix-model interpretation remains
+a separate unproved connection. The Gaussian estimates also prove exactly
+
+\[
+ \mathbb E\left(\sqrt{\|\Gamma\Gamma^*/M\|}-1\right)_+
+ \le 3\sqrt{d/M},
+\]
+
+for a standard complex `d × M` Gaussian matrix. The proof first bounds its
+norm by a real `2d × M` Gaussian norm, retaining the leading column term one,
+then uses exponential moments to bound the positive centered deviation by one.
+
 ## Dependency overview
 
 Solid arrows denote proved dependencies. Dotted arrows mark unfinished steps.
@@ -158,75 +194,63 @@ This is a route toward Theorem 7.2, **not** a claim that it has been obtained.
 
 ```mermaid
 flowchart TD
-  F[Frobenius identities and positive traces] --> S[Two-fiber Stiefel inequality]
-  S --> I[Gaussian coefficient increment domination]
-  SF[External finite Sudakov–Fernique with drift] --> G[Finite density–Stiefel comparison]
-  I --> G
-  CFC[Matrix CFC and operator order] --> T[Rectangular trace-norm estimates]
-  T --> AM[Weighted trace AM–GM inequality]
-  AM --> R[Density functional ≤ rhoPlus]
-  T --> D[Density energy bound ≤ sigma]
-  D --> B[Pointwise block comparison bound]
-  R --> B
-  T --> Q[Polar contraction and trace duality]
-  Q --> FB[Finite block-process bound]
-  B --> FB
-  LSI[External all-Lipschitz Gaussian concentration] --> GC[Concentration on finite real Hilbert spaces]
-  GC --> FC[Finite spectral-process concentration]
-  D --> FC
-  GC --> WC[Complex Gaussian norm concentration]
-  WC -. missing mean estimate and tail integration .-> W[Wishart positive-part bound: constant 3]
-  G -. compact supremum and spectral representation .-> FULL[Full-process comparison]
-  FB -. identify coefficients with rectangular Gaussian trace process .-> FULL
-  FULL -.-> U[Expected upper edge: constant 6]
-  W -.-> U
-  U -. sign symmetry .-> LOW[Expected lower edge: constant 6]
-  FC -. full matrix Lipschitz and two-tail integration .-> MAIN[Theorem 7.2: constant 9]
-  U -.-> MAIN
-  LOW -.-> MAIN
+  F[Positive traces and polar contraction] --> P[Supported purification increment]
+  P --> C[Continuous purification coefficients]
+  SF[External finite comparison with drift] --> CS[Countable exhaustion and dominated convergence]
+  CS --> SFULL[Separable continuous comparison]
+  C --> FULL[Full purification comparison]
+  SFULL --> FULL
+  FULL --> SIGN[Two-sign comparison with independent blocks]
+  T[Trace ideal and density bounds] --> B[Pointwise purification bound]
+  RG[Real bilinear Gaussian comparison] --> RM[Real matrix mean: sqrt rows + sqrt columns]
+  LSI[External Gaussian concentration] --> EP[Positive centered deviation at most 1]
+  RM --> W[Realification and Wishart positive excess: constant 3]
+  EP --> W
+  W --> U[Full quadratic-process bound: constant 6]
+  B --> U
+  FULL --> U
+  R[Exact signed Rayleigh formula] -. tensor identity and Gaussian transpose invariance .-> H[Paper matrix-model identification]
+  U -.-> H
+  SIGN -. uniform two-block bound .-> MAIN[Theorem 7.2: constant 9]
+  H -.-> MAIN
   MAIN -.-> AS[Asymptotic corollaries]
 ```
 
 ## Remaining obstacles, precisely
 
-1. **Full spectral-process representation and compact comparison.** Lemma 4.2
-   needs a density/purification factorization of every unit vector with a
-   coisometry. The polar contraction is already proved, including singular
-   inputs, but extending a partial isometry to a coisometry when `M ≥ N` is
-   still needed. The finite comparison must then be upgraded to the compact
-   density–Stiefel product, with continuity, measurability, and integrability
-   of its supremum. Lean-Sudakov's countable comparison infrastructure is
-   relevant, but a dense restriction and its convergence have not been
-   implemented. The rectangular coefficient/trace-process identity and
-   Gaussian block reindexing also remain to be assembled.
-2. **Wishart mean and positive-part expectation.** Concentration at the actual
-   mean and the exact identity `sqrt ‖ΓΓ*/M‖ = ‖Γ‖/sqrt M` are proved. The sharp
-   complex Gaussian mean bound `E‖Γ‖ ≤ sqrt M + sqrt d` is still missing. A
-   naive realification can lose a factor `sqrt 2` in the leading term, which
-   would be insufficient here. After an appropriate complex Chevet/comparison
-   argument, the Gaussian tail must be integrated to get the explicit `3`
-   in Lemma 5.1. Neither the mean inequality nor this integration is assumed.
-3. **Full matrix Lipschitz bound and final maximum penalty.** The uniform
-   finite-process coefficient norm and individual matrix spectral Lipschitz
-   inequalities are proved. Relating the full spectral suprema to the
-   Kronecker matrix model is unfinished. The two centered edge tails must
-   then be integrated to obtain the extra `3σ/√M`, and use `nN ≥ 1` (handling `n = 0` separately) to reach
-   exactly the stated `9√(nN/M)σ`. This last numerical constant is not replaced
-   by an abstract constant.
-4. **Density dual equalities.** They are not necessary for the upper bound
-   route in Remark 3.6. A complete proof of Lemma 3.2's infimum equality needs
-   singular-matrix approximation; Propositions 3.3/3.5 additionally need a
-   suitable minimax equality or a direct dual argument. This development
-   deliberately proves only the sufficient elementary minimax inequality.
-5. **Free spectral identification.** There is no constructed free semicircular
-   family, Fock-space model, or proof of Lehner's free-edge formula. The finite
-   variational quantities are fully separate from free spectral edges. This
-   identification would require significant additional operator-algebra
-   infrastructure and a formal proof of the formula, rather than an axiom.
-6. **Remaining consequences.** The asymptotic corollaries need the missing
-   finite expectation estimate first. The left expected-edge reduction also
-   needs symmetry in law of the constructed GUE family; variational sign
-   symmetry alone does not establish that probabilistic step. Section 8 needs equality in law under
-   real orthogonal mixing of GUE families and the precise Kraus-decomposition
-   argument. Section 9 needs explicit signed matrix counterexamples. None
-   has been replaced by an assumption or advertised as completed.
+1. **Matrix-model identification.** The signed unit-vector Rayleigh formula
+   for an actual Hermitian matrix is proved. The remaining step is the
+   entrywise Kronecker/vectorization identity relating the paper's `H_M` to
+   the proved quadratic coefficients. Vectorizing an `N × M` purification
+   introduces a transpose on the GUE factor; Gaussian invariance under this
+   coordinate permutation must be proved and used explicitly. No random
+   Kronecker model is currently substituted by definition for its supremum.
+2. **Assembling the two-sign upper bound.** The full two-sign comparison is
+   proved under actual Gaussian measures. The one-sign trace-process identity,
+   uniform pointwise estimate, block Gaussian isometry, and expectation bound
+   are also proved. The remaining uniform estimate must control both
+   independent rectangular blocks by one stacked Gaussian matrix. This needs
+   an operator-norm bound for restricting rows and a matching coordinate
+   isometry. Combining these with the matrix-model identity and explicit
+   numerical simplification is still required for Theorem 7.2. A sufficient
+   route uses `2nN` complex rows: the proved constant-3 Wishart estimate
+   would give an error `6 sqrt(2nN/M) sigma`, and `6 sqrt 2 ≤ 9` gives
+   the requested constant. The uniform two-block step is not yet proved.
+3. **Sharper subsidiary Gaussian statements.** The exact constant-3
+   positive-excess conclusion of Lemma 5.1 is proved by an alternative route.
+   The sharp complex mean `E||Γ|| ≤ sqrt M + sqrt d` and the lemma's displayed
+   tail around that threshold remain unformalized. They are unnecessary for
+   the integrated constant-6 quadratic-process bound already proved.
+4. **Density dual equalities.** These are unnecessary for Remark 3.6's upper
+   bound route. Lemma 3.2's infimum equality needs singular-matrix
+   approximation; Propositions 3.3/3.5 additionally need a minimax equality
+   or a direct dual argument. Only the sufficient elementary inequalities
+   have been formalized.
+5. **Free spectral identification.** No free semicircular family, Fock-space
+   construction, or Lehner formula is assumed or constructed. The finite
+   variational quantities remain separate from free spectral edges.
+6. **Remaining consequences.** The asymptotic corollaries need the actual
+   finite matrix expectation theorem. The lower-edge statement also requires
+   symmetry in law of the GUE family. Section 8 needs Gaussian invariance
+   under real orthogonal mixing and a Kraus-decomposition argument; Section 9
+   needs the explicit signed counterexamples.

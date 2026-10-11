@@ -13,3 +13,17 @@ import LehnerEdges.GaussianMatrices
 import LehnerEdges.ProcessLipschitz
 import LehnerEdges.Wishart
 import LehnerEdges.FiniteBlockBound
+import LehnerEdges.Purification
+import LehnerEdges.CompactComparison
+import LehnerEdges.PurificationComparison
+import LehnerEdges.GaussianMoments
+import LehnerEdges.RealGaussianComparison
+import LehnerEdges.GaussianPositivePart
+import LehnerEdges.RealGaussianNorm
+import LehnerEdges.Realification
+import LehnerEdges.ComplexGaussianNorm
+import LehnerEdges.SignedComparison
+import LehnerEdges.PurificationBound
+import LehnerEdges.GaussianBlock
+import LehnerEdges.GaussianEdgeComparison
+import LehnerEdges.MatrixRayleigh

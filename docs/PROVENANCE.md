@@ -25,7 +25,7 @@ rather than by importing an unformalized general square-root inequality.
 | Dependency | Pinned revision | Use |
 |---|---|---|
 | Mathlib | `v4.34.1`, commit `d13f23b723b8a846827a245b89c10fc7d3f11612` | Matrix operator norm and order, continuous functional calculus, matrix inverse, spectral calculus, finite-dimensional Gaussian measures, integration, subgaussian MGF and tail API |
-| [T1mberland/Lean-Sudakov](https://github.com/T1mberland/Lean-Sudakov) | `bcd86db77e0153159977b8085f7ffdd993a3d3e9` | `sudakov_fernique_drift`, `vecMax`, `gaussian_integrable_vecMax_drift` in `LeanSudakov.SudakovFerniqueDrift` and its imports |
+| [T1mberland/Lean-Sudakov](https://github.com/T1mberland/Lean-Sudakov) | `bcd86db77e0153159977b8085f7ffdd993a3d3e9` | `sudakov_fernique_drift`, `vecMax`, `gaussian_integrable_vecMax_drift` in `LeanSudakov.SudakovFerniqueDrift` and its imports; `countableApproxFinset`, `countableApproxMax`, their convergence and domination results in `LeanSudakov.CountableSudakov` |
 | [T1mberland/lean-log-sobolev](https://github.com/T1mberland/lean-log-sobolev) | `1a95157e7d4cc18d444aa640c751acbe4c7692d4` | `LogSobolev.gaussian_integrable_of_lipschitz` and `LogSobolev.gaussian_hasSubgaussianMGF` in `LogSobolev.Concentration.Gaussian` |
 
 Mathlib is Apache 2.0. lean-log-sobolev is Apache 2.0 and retains the copyright

@@ -6,8 +6,7 @@ bounds for matrix-valued GUE sums*, [arXiv:2606.21137v2](https://arxiv.org/abs/2
 The full v2 PDF, including its proofs, was read before implementation.
 
 **Theorem 7.2 is not proved.** Neither are the expected spectral-edge bounds,
-the Wishart expectation estimate, the asymptotic corollaries, or the
-identification with free spectral edges. There is no axiom asserting any of
+the asymptotic corollaries, or the identification with free spectral edges. There is no axiom asserting any of
 these results and no theorem with additional assumptions standing in for them.
 
 The development proves the two-fiber Stiefel increment inequality (Lemma 4.1),
@@ -17,7 +16,10 @@ the left density inequality, rectangular Schatten estimates,
 the deterministic block comparison estimate, and every finite restriction of
 the Gaussian comparison with arbitrary deterministic drift. It also transports
 Gaussian concentration to finite real Hilbert spaces and applies it to finite
-restrictions of the spectral process.
+restrictions of the spectral process. It also proves continuous-index comparison, singular purification increments, the full quadratic-process
+expectation bound with constant 6, and the Wishart positive-excess bound with
+constant 3. The quadratic process has not yet been identified with the
+spectral edge of the paper’s Kronecker matrix model.
 
 ## Build and verify
 
