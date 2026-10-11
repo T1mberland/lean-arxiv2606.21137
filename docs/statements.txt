@@ -1,0 +1,352 @@
+@LehnerEdges.blockRow_mul_blockColumn : ∀ {n N M : ℕ} (B : Fin n → LehnerEdges.Mat N)
+  (Γ : Fin n → Matrix (Fin N) (Fin M) ℂ), LehnerEdges.blockRow B * LehnerEdges.blockColumn Γ = ∑ i, B i * Γ i
+@LehnerEdges.blockRow_mul_adjoint : ∀ {n N : ℕ} (B : Fin n → LehnerEdges.Mat N),
+  LehnerEdges.blockRow B * (LehnerEdges.blockRow B).conjTranspose = ∑ i, B i * Matrix.conjTranspose (B i)
+@LehnerEdges.compressed_block_energy : ∀ {n N : ℕ} (A : Fin n → LehnerEdges.Mat N),
+  (∀ (i : Fin n), Matrix.IsHermitian (A i)) →
+    ∀ (C : LehnerEdges.Density N),
+      (LehnerEdges.blockRow fun i => LehnerEdges.compressed (↑C) (A i)) *
+          (LehnerEdges.blockRow fun i => LehnerEdges.compressed (↑C) (A i)).conjTranspose =
+        LehnerEdges.energy A ↑C
+@LehnerEdges.compressed_block_traceNorm : ∀ {n N : ℕ} (A : Fin n → LehnerEdges.Mat N),
+  (∀ (i : Fin n), Matrix.IsHermitian (A i)) →
+    ∀ (C : LehnerEdges.Density N),
+      LehnerEdges.traceNorm (LehnerEdges.blockRow fun i => LehnerEdges.compressed (↑C) (A i)) =
+        (Matrix.trace (CFC.sqrt (LehnerEdges.energy A ↑C))).re
+@LehnerEdges.pointwise_comparison_bound : ∀ {n N M : ℕ} [NeZero N] (A₀ : LehnerEdges.Mat N)
+  (A : Fin n → LehnerEdges.Mat N),
+  Matrix.IsHermitian A₀ →
+    (∀ (i : Fin n), Matrix.IsHermitian (A i)) →
+      ∀ (C : LehnerEdges.Density N) (Γ : Fin n → Matrix (Fin N) (Fin M) ℂ),
+        (A₀ * ↑C).trace.re + 2 / √↑M * LehnerEdges.traceNorm (∑ i, LehnerEdges.compressed (↑C) (A i) * Γ i) ≤
+          LehnerEdges.rhoPlus A₀ A + 2 * max (‖LehnerEdges.blockColumn Γ‖ / √↑M - 1) 0 * √‖LehnerEdges.squareFunction A‖
+@LehnerEdges.frobeniusSq_sqrt : ∀ {N : ℕ} (P : LehnerEdges.Mat N),
+  Matrix.PosSemidef P → LehnerEdges.frobeniusSq (CFC.sqrt P) = (Matrix.trace P).re
+@LehnerEdges.density_trace_le_norm : ∀ {N : ℕ} (C : LehnerEdges.Density N) (B : LehnerEdges.Mat N),
+  Matrix.IsHermitian B → (↑C * B).trace.re ≤ ‖B‖
+@LehnerEdges.squareFunction_posSemidef : ∀ {N n : ℕ} (A : Fin n → LehnerEdges.Mat N),
+  (∀ (i : Fin n), Matrix.IsHermitian (A i)) → Matrix.PosSemidef (LehnerEdges.squareFunction A)
+@LehnerEdges.trace_covariance : ∀ {N n : ℕ} (A : Fin n → LehnerEdges.Mat N) (C : LehnerEdges.Mat N),
+  Matrix.trace (LehnerEdges.covariance A C) = (C * LehnerEdges.squareFunction A).trace
+@LehnerEdges.traceNorm_sqrt_mul_sqrt : ∀ {N : ℕ} (C D : LehnerEdges.Mat N),
+  Matrix.PosSemidef D →
+    LehnerEdges.traceNorm (CFC.sqrt C * CFC.sqrt D) = (CFC.sqrt (CFC.sqrt C * D * CFC.sqrt C)).trace.re
+@LehnerEdges.fidelity_bound : ∀ {N : ℕ} (C D : LehnerEdges.Mat N),
+  Matrix.PosSemidef C →
+    Matrix.PosSemidef D →
+      (CFC.sqrt (CFC.sqrt C * D * CFC.sqrt C)).trace.re ≤ √(Matrix.trace C).re * √(Matrix.trace D).re
+@LehnerEdges.density_energy_bound : ∀ {N n : ℕ} (A : Fin n → LehnerEdges.Mat N),
+  (∀ (i : Fin n), Matrix.IsHermitian (A i)) →
+    ∀ (C : LehnerEdges.Density N),
+      (Matrix.trace (CFC.sqrt (LehnerEdges.energy A ↑C))).re ≤ √‖LehnerEdges.squareFunction A‖
+@LehnerEdges.comparison_block_bound : ∀ {N d M : ℕ} (R : Matrix (Fin N) (Fin d) ℂ) (Γ : Matrix (Fin d) (Fin M) ℂ)
+  {m : ℝ}, 0 < m → 1 / √m * LehnerEdges.traceNorm (R * Γ) ≤ ‖Γ‖ / √m * LehnerEdges.traceNorm R
+@LehnerEdges.stiefel_norm_le_one : ∀ {N M : ℕ} [NeZero N] (W : LehnerEdges.Stiefel N M), ‖↑W‖ ≤ 1
+@LehnerEdges.stiefel_pair_le_traceNorm : ∀ {N M : ℕ} [NeZero N] (W : LehnerEdges.Stiefel N M)
+  (T : Matrix (Fin N) (Fin M) ℂ), LehnerEdges.frobeniusPair (↑W) T ≤ LehnerEdges.traceNorm T
+@LehnerEdges.finite_block_process_bound : ∀ {ι : Type u_1} [inst : Fintype ι] [inst_1 : Nonempty ι] {n N M : ℕ}
+  [NeZero N] (A₀ : LehnerEdges.Mat N) (A : Fin n → LehnerEdges.Mat N),
+  Matrix.IsHermitian A₀ →
+    (∀ (i : Fin n), Matrix.IsHermitian (A i)) →
+      ∀ (C : ι → LehnerEdges.Density N) (W : ι → LehnerEdges.Stiefel N M) (Γ : Fin n → Matrix (Fin N) (Fin M) ℂ),
+        (vecMax fun t =>
+            (A₀ * ↑(C t)).trace.re +
+              2 / √↑M * LehnerEdges.frobeniusPair (↑(W t)) (∑ i, LehnerEdges.compressed (↑(C t)) (A i) * Γ i)) ≤
+          LehnerEdges.rhoPlus A₀ A + 2 * max (‖LehnerEdges.blockColumn Γ‖ / √↑M - 1) 0 * √‖LehnerEdges.squareFunction A‖
+@LehnerEdges.processMap_apply : ∀ {E : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup E]
+  [inst_1 : InnerProductSpace ℝ E] (v : ι → E) (x : E) (i : ι), (LehnerEdges.processMap v) x i = inner ℝ (v i) x
+@LehnerEdges.linear_gaussian_comparison : ∀ {E : Type u_1} {F : Type u_2} {ι : Type u_3} [inst : NormedAddCommGroup E]
+  [inst_1 : InnerProductSpace ℝ E] [inst_2 : FiniteDimensional ℝ E] [inst_3 : MeasurableSpace E] [BorelSpace E]
+  [inst_5 : NormedAddCommGroup F] [inst_6 : InnerProductSpace ℝ F] [inst_7 : FiniteDimensional ℝ F]
+  [inst_8 : MeasurableSpace F] [BorelSpace F] [inst_10 : Fintype ι] [DecidableEq ι] [inst_12 : Nonempty ι] (v : ι → E)
+  (w : ι → F),
+  (∀ (i j : ι), ‖v i - v j‖ ^ 2 ≤ ‖w i - w j‖ ^ 2) →
+    ∀ (a : ι → ℝ),
+      ∫ (x : E), vecMax (a + (LehnerEdges.processMap v) x) ∂ProbabilityTheory.stdGaussian E ≤
+        ∫ (y : F), vecMax (a + (LehnerEdges.processMap w) y) ∂ProbabilityTheory.stdGaussian F
+@LehnerEdges.familyVector_norm_sq : ∀ {n N M : ℕ} (B : Fin n → Matrix (Fin N) (Fin M) ℂ),
+  ‖LehnerEdges.familyVector B‖ ^ 2 = ∑ i, LehnerEdges.frobeniusSq (B i)
+@LehnerEdges.familyVector_sub : ∀ {n N M : ℕ} (B D : Fin n → Matrix (Fin N) (Fin M) ℂ),
+  LehnerEdges.familyVector B - LehnerEdges.familyVector D = LehnerEdges.familyVector fun i => B i - D i
+@LehnerEdges.coefficient_increment : ∀ {n N M : ℕ} (A : Fin n → LehnerEdges.Mat N),
+  (∀ (i : Fin n), Matrix.PosSemidef (A i)) →
+    ∀ (C D : LehnerEdges.Density N) (W V : LehnerEdges.Stiefel N M),
+      ‖LehnerEdges.gueCoefficient A C W - LehnerEdges.gueCoefficient A D V‖ ^ 2 ≤
+        ‖LehnerEdges.complexCoefficient A C W - LehnerEdges.complexCoefficient A D V‖ ^ 2
+@LehnerEdges.finite_density_stiefel_comparison : ∀ {ι : Type u_1} [inst : Fintype ι] [DecidableEq ι]
+  [inst_2 : Nonempty ι] {n N M : ℕ} (A : Fin n → LehnerEdges.Mat N),
+  (∀ (i : Fin n), Matrix.PosSemidef (A i)) →
+    ∀ (C : ι → LehnerEdges.Density N) (W : ι → LehnerEdges.Stiefel N M) (a : ι → ℝ),
+      ∫ (x : LehnerEdges.GaussianCoordinates n M M),
+          vecMax
+            (a +
+              (LehnerEdges.processMap fun t => LehnerEdges.gueCoefficient A (C t) (W t))
+                x) ∂ProbabilityTheory.stdGaussian (LehnerEdges.GaussianCoordinates n M M) ≤
+        ∫ (y : LehnerEdges.GaussianCoordinates n N M),
+          vecMax
+            (a +
+              (LehnerEdges.processMap fun t => LehnerEdges.complexCoefficient A (C t) (W t))
+                y) ∂ProbabilityTheory.stdGaussian (LehnerEdges.GaussianCoordinates n N M)
+LehnerEdges.standardGaussian_eq_stdGaussian : ∀ (d : ℕ),
+  LogSobolev.standardGaussian d = ProbabilityTheory.stdGaussian (EuclideanSpace ℝ (Fin d))
+@LehnerEdges.stdGaussian_integrable_of_lipschitz : ∀ {E : Type u_1} [inst : NormedAddCommGroup E]
+  [inst_1 : InnerProductSpace ℝ E] [inst_2 : FiniteDimensional ℝ E] [inst_3 : MeasurableSpace E] [BorelSpace E]
+  {K : NNReal} {f : E → ℝ}, LipschitzWith K f → MeasureTheory.Integrable f (ProbabilityTheory.stdGaussian E)
+@LehnerEdges.stdGaussian_hasSubgaussianMGF : ∀ {E : Type u_1} [inst : NormedAddCommGroup E]
+  [inst_1 : InnerProductSpace ℝ E] [inst_2 : FiniteDimensional ℝ E] [inst_3 : MeasurableSpace E] [BorelSpace E]
+  {K : NNReal} {f : E → ℝ},
+  LipschitzWith K f →
+    ProbabilityTheory.HasSubgaussianMGF (fun x => f x - ∫ (y : E), f y ∂ProbabilityTheory.stdGaussian E) (K ^ 2)
+      (ProbabilityTheory.stdGaussian E)
+@LehnerEdges.stdGaussian_measure_ge_le : ∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : InnerProductSpace ℝ E]
+  [inst_2 : FiniteDimensional ℝ E] [inst_3 : MeasurableSpace E] [BorelSpace E] {K : NNReal} {f : E → ℝ},
+  LipschitzWith K f →
+    ∀ {t : ℝ},
+      0 ≤ t →
+        (ProbabilityTheory.stdGaussian E).real {x | t ≤ f x - ∫ (y : E), f y ∂ProbabilityTheory.stdGaussian E} ≤
+          Real.exp (-t ^ 2 / (2 * ↑K ^ 2))
+@LehnerEdges.euclidean_real_inner_eq_re : ∀ {ι : Type u_1} [inst : Fintype ι] (x y : EuclideanSpace ℂ ι),
+  inner ℝ x y = (inner ℂ x y).re
+@LehnerEdges.matrixVector_matrixOfVector : ∀ {N M : ℕ} (g : EuclideanSpace ℂ (Fin N × Fin M)),
+  LehnerEdges.matrixVector (LehnerEdges.matrixOfVector g) = g
+@LehnerEdges.gueProjection_hermitian : ∀ {N : ℕ} (Z : LehnerEdges.Mat N),
+  Matrix.IsHermitian (LehnerEdges.gueProjection Z)
+@LehnerEdges.gueProjection_pair : ∀ {N : ℕ} (Z K : LehnerEdges.Mat N),
+  Matrix.IsHermitian K → LehnerEdges.frobeniusPair (LehnerEdges.gueProjection Z) K = LehnerEdges.frobeniusPair Z K
+@LehnerEdges.gue_pair_eq_innerSL : ∀ {N : ℕ} (K : LehnerEdges.Mat N),
+  Matrix.IsHermitian K →
+    (fun g => LehnerEdges.frobeniusPair (LehnerEdges.gueProjection (LehnerEdges.matrixOfVector g)) K) =
+      ⇑((innerSL ℝ) (LehnerEdges.matrixVector K))
+@LehnerEdges.gue_variance_pair : ∀ {N : ℕ} (K : LehnerEdges.Mat N),
+  Matrix.IsHermitian K →
+    ProbabilityTheory.variance
+        (fun g => LehnerEdges.frobeniusPair (LehnerEdges.gueProjection (LehnerEdges.matrixOfVector g)) K)
+        (ProbabilityTheory.stdGaussian (EuclideanSpace ℂ (Fin N × Fin N))) =
+      LehnerEdges.frobeniusSq K
+@LehnerEdges.gue_mean_pair : ∀ {N : ℕ} (K : LehnerEdges.Mat N),
+  Matrix.IsHermitian K →
+    ∫ (g : EuclideanSpace ℂ (Fin N × Fin N)),
+        LehnerEdges.frobeniusPair (LehnerEdges.gueProjection (LehnerEdges.matrixOfVector g))
+          K ∂ProbabilityTheory.stdGaussian (EuclideanSpace ℂ (Fin N × Fin N)) =
+      0
+@LehnerEdges.gue_pair_law : ∀ {N : ℕ} (K : LehnerEdges.Mat N),
+  Matrix.IsHermitian K →
+    MeasureTheory.Measure.map
+        (fun g => LehnerEdges.frobeniusPair (LehnerEdges.gueProjection (LehnerEdges.matrixOfVector g)) K)
+        (ProbabilityTheory.stdGaussian (EuclideanSpace ℂ (Fin N × Fin N))) =
+      ProbabilityTheory.gaussianReal 0 (LehnerEdges.frobeniusSq K).toNNReal
+@LehnerEdges.matrixOfVector_norm_lipschitz : ∀ {N M : ℕ}, LipschitzWith 1 fun g => ‖LehnerEdges.matrixOfVector g‖
+@LehnerEdges.gaussian_matrix_norm_concentration : ∀ {N M : ℕ} {t : ℝ},
+  0 ≤ t →
+    (ProbabilityTheory.stdGaussian (EuclideanSpace ℂ (Fin N × Fin M))).real
+        {g |
+          t ≤
+            ‖LehnerEdges.matrixOfVector g‖ -
+              ∫ (h : EuclideanSpace ℂ (Fin N × Fin M)),
+                ‖LehnerEdges.matrixOfVector h‖ ∂ProbabilityTheory.stdGaussian (EuclideanSpace ℂ (Fin N × Fin M))} ≤
+      Real.exp (-t ^ 2 / 2)
+@LehnerEdges.posDef_inv_neg : ∀ {N : ℕ} {Z : LehnerEdges.Mat N}, Matrix.PosDef Z → (-Z)⁻¹ = -Z⁻¹
+@LehnerEdges.lehnerMatrix_neg_parameter : ∀ {N n : ℕ} (A₀ : LehnerEdges.Mat N) (A : Fin n → LehnerEdges.Mat N)
+  {Z : LehnerEdges.Mat N}, Matrix.PosDef Z → LehnerEdges.lehnerMatrix A₀ A (-Z) = -LehnerEdges.lehnerMatrix (-A₀) A Z
+@LehnerEdges.lambdaMin_lehner_neg : ∀ {N n : ℕ} [NeZero N] (A₀ : LehnerEdges.Mat N) (A : Fin n → LehnerEdges.Mat N),
+  Matrix.IsHermitian A₀ →
+    (∀ (i : Fin n), Matrix.IsHermitian (A i)) →
+      ∀ {Z : LehnerEdges.Mat N},
+        Matrix.PosDef Z →
+          LehnerEdges.lambdaMin (LehnerEdges.lehnerMatrix A₀ A (-Z)) =
+            -LehnerEdges.lambdaMax (LehnerEdges.lehnerMatrix (-A₀) A Z)
+@LehnerEdges.rhoMinus_eq_neg_rhoPlus : ∀ {N n : ℕ} [NeZero N] (A₀ : LehnerEdges.Mat N) (A : Fin n → LehnerEdges.Mat N),
+  Matrix.IsHermitian A₀ →
+    (∀ (i : Fin n), Matrix.IsHermitian (A i)) → LehnerEdges.rhoMinus A₀ A = -LehnerEdges.rhoPlus (-A₀) A
+@LehnerEdges.rhoStar_eq_max_rhoPlus : ∀ {N n : ℕ} [NeZero N] (A₀ : LehnerEdges.Mat N) (A : Fin n → LehnerEdges.Mat N),
+  Matrix.IsHermitian A₀ →
+    (∀ (i : Fin n), Matrix.IsHermitian (A i)) →
+      LehnerEdges.rhoStar A₀ A = max (LehnerEdges.rhoPlus A₀ A) (LehnerEdges.rhoPlus (-A₀) A)
+@LehnerEdges.rhoMinus_le_densityFunctional : ∀ {N n : ℕ} [NeZero N] (A₀ : LehnerEdges.Mat N)
+  (A : Fin n → LehnerEdges.Mat N),
+  Matrix.IsHermitian A₀ →
+    (∀ (i : Fin n), Matrix.IsHermitian (A i)) →
+      ∀ (C : LehnerEdges.Density N),
+        LehnerEdges.rhoMinus A₀ A ≤ (A₀ * ↑C).trace.re - 2 * (Matrix.trace (CFC.sqrt (LehnerEdges.energy A ↑C))).re
+@LehnerEdges.covariance_one : ∀ {N n : ℕ} (A : Fin n → LehnerEdges.Mat N),
+  LehnerEdges.covariance A 1 = LehnerEdges.squareFunction A
+@LehnerEdges.compressed_posSemidef : ∀ {N : ℕ} (C A : LehnerEdges.Mat N),
+  Matrix.PosSemidef A → Matrix.PosSemidef (LehnerEdges.compressed C A)
+@LehnerEdges.energy_eq_sum_sq : ∀ {N n : ℕ} (A : Fin n → LehnerEdges.Mat N) (C : LehnerEdges.Mat N),
+  Matrix.PosSemidef C → LehnerEdges.energy A C = ∑ i, LehnerEdges.compressed C (A i) ^ 2
+@LehnerEdges.covariance_posSemidef : ∀ {N n : ℕ} (A : Fin n → LehnerEdges.Mat N) (C : LehnerEdges.Mat N),
+  (∀ (i : Fin n), Matrix.IsHermitian (A i)) → Matrix.PosSemidef C → Matrix.PosSemidef (LehnerEdges.covariance A C)
+@LehnerEdges.energy_posSemidef : ∀ {N n : ℕ} (A : Fin n → LehnerEdges.Mat N) (C : LehnerEdges.Mat N),
+  (∀ (i : Fin n), Matrix.IsHermitian (A i)) → Matrix.PosSemidef C → Matrix.PosSemidef (LehnerEdges.energy A C)
+@LehnerEdges.frobeniusSq_nonneg : ∀ {N M : ℕ} (A : Matrix (Fin N) (Fin M) ℂ), 0 ≤ LehnerEdges.frobeniusSq A
+@LehnerEdges.re_trace_mul_nonneg : ∀ {N : ℕ} {P Q : LehnerEdges.Mat N},
+  Matrix.PosSemidef P → Matrix.PosSemidef Q → 0 ≤ (P * Q).trace.re
+@LehnerEdges.re_trace_conjTranspose : ∀ {N : ℕ} (A : LehnerEdges.Mat N),
+  (Matrix.conjTranspose A).trace.re = (Matrix.trace A).re
+@LehnerEdges.frobeniusSq_sub : ∀ {N M : ℕ} (A B : Matrix (Fin N) (Fin M) ℂ),
+  LehnerEdges.frobeniusSq (A - B) =
+    LehnerEdges.frobeniusSq A + LehnerEdges.frobeniusSq B - 2 * (A.conjTranspose * B).trace.re
+@LehnerEdges.frobeniusSq_eq_sum : ∀ {N M : ℕ} (A : Matrix (Fin N) (Fin M) ℂ),
+  LehnerEdges.frobeniusSq A = ∑ i, ∑ j, ‖A i j‖ ^ 2
+@LehnerEdges.matrixVector_norm_sq : ∀ {N M : ℕ} (A : Matrix (Fin N) (Fin M) ℂ),
+  ‖LehnerEdges.matrixVector A‖ ^ 2 = LehnerEdges.frobeniusSq A
+@LehnerEdges.matrixVector_inner : ∀ {N M : ℕ} (A B : Matrix (Fin N) (Fin M) ℂ),
+  inner ℂ (LehnerEdges.matrixVector A) (LehnerEdges.matrixVector B) = (A.conjTranspose * B).trace
+@LehnerEdges.trace_cauchy_schwarz_sq : ∀ {N M : ℕ} (A B : Matrix (Fin N) (Fin M) ℂ),
+  ‖(A.conjTranspose * B).trace‖ ^ 2 ≤ LehnerEdges.frobeniusSq A * LehnerEdges.frobeniusSq B
+@LehnerEdges.sum_frobeniusSq_mul : ∀ {n N M : ℕ} (A : Fin n → LehnerEdges.Mat N),
+  (∀ (i : Fin n), Matrix.IsHermitian (A i)) →
+    ∀ (S : Matrix (Fin N) (Fin M) ℂ),
+      ∑ i, LehnerEdges.frobeniusSq (A i * S) = (S.conjTranspose * LehnerEdges.squareFunction A * S).trace.re
+@LehnerEdges.sum_compressed_frobeniusSq_le : ∀ {n N : ℕ} (A : Fin n → LehnerEdges.Mat N),
+  (∀ (i : Fin n), Matrix.IsHermitian (A i)) →
+    ∀ (C : LehnerEdges.Density N),
+      ∑ i, LehnerEdges.frobeniusSq (LehnerEdges.compressed (↑C) (A i)) ≤ ‖LehnerEdges.squareFunction A‖
+@LehnerEdges.gueCoefficient_norm_le : ∀ {n N M : ℕ} (A : Fin n → LehnerEdges.Mat N),
+  (∀ (i : Fin n), Matrix.IsHermitian (A i)) →
+    ∀ (C : LehnerEdges.Density N) (W : LehnerEdges.Stiefel N M),
+      ‖LehnerEdges.gueCoefficient A C W‖ ≤ √‖LehnerEdges.squareFunction A‖ / √↑M
+@LehnerEdges.finite_process_lipschitz : ∀ {E : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup E]
+  [inst_1 : InnerProductSpace ℝ E] [inst_2 : Fintype ι] [inst_3 : Nonempty ι] (v : ι → E) (a : ι → ℝ) (K : NNReal),
+  (∀ (i : ι), ‖v i‖ ≤ ↑K) → LipschitzWith K fun x => vecMax (a + (LehnerEdges.processMap v) x)
+@LehnerEdges.finite_spectral_process_lipschitz : ∀ {ι : Type u_1} [inst : Fintype ι] [DecidableEq ι]
+  [inst_2 : Nonempty ι] {n N M : ℕ} (A : Fin n → LehnerEdges.Mat N),
+  (∀ (i : Fin n), Matrix.IsHermitian (A i)) →
+    ∀ (C : ι → LehnerEdges.Density N) (W : ι → LehnerEdges.Stiefel N M) (a : ι → ℝ),
+      LipschitzWith ⟨√‖LehnerEdges.squareFunction A‖ / √↑M, ⋯⟩ fun x =>
+        vecMax (a + (LehnerEdges.processMap fun t => LehnerEdges.gueCoefficient A (C t) (W t)) x)
+@LehnerEdges.finite_spectral_process_concentration : ∀ {ι : Type u_1} [inst : Fintype ι] [DecidableEq ι]
+  [inst_2 : Nonempty ι] {n N M : ℕ} (A : Fin n → LehnerEdges.Mat N),
+  (∀ (i : Fin n), Matrix.IsHermitian (A i)) →
+    ∀ (C : ι → LehnerEdges.Density N) (W : ι → LehnerEdges.Stiefel N M) (a : ι → ℝ) {t : ℝ},
+      0 ≤ t →
+        have f := fun x => vecMax (a + (LehnerEdges.processMap fun j => LehnerEdges.gueCoefficient A (C j) (W j)) x);
+        (ProbabilityTheory.stdGaussian (LehnerEdges.GaussianCoordinates n M M)).real
+            {x |
+              t ≤
+                f x -
+                  ∫ (y : LehnerEdges.GaussianCoordinates n M M),
+                    f y ∂ProbabilityTheory.stdGaussian (LehnerEdges.GaussianCoordinates n M M)} ≤
+          Real.exp (-t ^ 2 / (2 * (√‖LehnerEdges.squareFunction A‖ / √↑M) ^ 2))
+@LehnerEdges.frobeniusSq_mul_coisometry : ∀ {L N M : ℕ} (X : Matrix (Fin L) (Fin N) ℂ) (W : LehnerEdges.Stiefel N M),
+  LehnerEdges.frobeniusSq (X * ↑W) = LehnerEdges.frobeniusSq X
+@LehnerEdges.frobeniusSq_coisometry_adjoint_mul : ∀ {L N M : ℕ} (X : Matrix (Fin N) (Fin L) ℂ)
+  (W : LehnerEdges.Stiefel N M), LehnerEdges.frobeniusSq ((↑W).conjTranspose * X) = LehnerEdges.frobeniusSq X
+@LehnerEdges.re_trace_cross : ∀ {N : ℕ} (P Q K : LehnerEdges.Mat N),
+  Matrix.IsHermitian P → Matrix.IsHermitian Q → (P * K * Q).trace.re = (P * Q * Matrix.conjTranspose K).trace.re
+@LehnerEdges.positive_cross_bound : ∀ {N : ℕ} {P Q : LehnerEdges.Mat N},
+  Matrix.PosSemidef P →
+    Matrix.PosSemidef Q →
+      ∀ (K : LehnerEdges.Mat N),
+        2 * (P * Q * Matrix.conjTranspose K).trace.re ≤ (P * Q).trace.re + (P * K * Q * Matrix.conjTranspose K).trace.re
+@LehnerEdges.stiefel_pair_right : ∀ {N M : ℕ} (P Q : LehnerEdges.Mat N) (W V : LehnerEdges.Stiefel N M),
+  Matrix.IsHermitian P →
+    ((P * ↑W).conjTranspose * (Q * ↑V)).trace.re = (P * Q * (↑W * (↑V).conjTranspose).conjTranspose).trace.re
+@LehnerEdges.stiefel_pair_compressed : ∀ {N M : ℕ} (P Q : LehnerEdges.Mat N) (W V : LehnerEdges.Stiefel N M),
+  Matrix.IsHermitian P →
+    (((↑W).conjTranspose * P * ↑W).conjTranspose * ((↑V).conjTranspose * Q * ↑V)).trace.re =
+      (P * (↑W * (↑V).conjTranspose) * Q * (↑W * (↑V).conjTranspose).conjTranspose).trace.re
+@LehnerEdges.two_fiber_stiefel_increment : ∀ {N M : ℕ} {P Q : LehnerEdges.Mat N},
+  Matrix.PosSemidef P →
+    Matrix.PosSemidef Q →
+      ∀ (W V : LehnerEdges.Stiefel N M),
+        LehnerEdges.frobeniusSq ((↑W).conjTranspose * P * ↑W - (↑V).conjTranspose * Q * ↑V) ≤
+          2 * LehnerEdges.frobeniusSq (P * ↑W - Q * ↑V)
+@LehnerEdges.compressed_increment : ∀ {N M n : ℕ} (A : Fin n → LehnerEdges.Mat N),
+  (∀ (i : Fin n), Matrix.PosSemidef (A i)) →
+    ∀ (C D : LehnerEdges.Density N) (W V : LehnerEdges.Stiefel N M),
+      ∑ i,
+          LehnerEdges.frobeniusSq
+            ((↑W).conjTranspose * LehnerEdges.compressed (↑C) (A i) * ↑W -
+              (↑V).conjTranspose * LehnerEdges.compressed (↑D) (A i) * ↑V) ≤
+        2 *
+          ∑ i, LehnerEdges.frobeniusSq (LehnerEdges.compressed (↑C) (A i) * ↑W - LehnerEdges.compressed (↑D) (A i) * ↑V)
+@LehnerEdges.trace_amgm : ∀ {N : ℕ} {E Y : LehnerEdges.Mat N},
+  Matrix.PosSemidef E → Matrix.PosDef Y → 2 * (Matrix.trace (CFC.sqrt E)).re ≤ (Matrix.trace Y).re + (E * Y⁻¹).trace.re
+@LehnerEdges.weighted_trace_amgm : ∀ {N : ℕ} {C D Z : LehnerEdges.Mat N},
+  Matrix.PosSemidef C →
+    Matrix.PosSemidef D →
+      Matrix.PosDef Z → 2 * (CFC.sqrt (CFC.sqrt C * D * CFC.sqrt C)).trace.re ≤ (C * Z).trace.re + (D * Z⁻¹).trace.re
+@LehnerEdges.polarContraction_factorization : ∀ {N M : ℕ} (A : Matrix (Fin N) (Fin M) ℂ),
+  CFC.sqrt (A * A.conjTranspose) * LehnerEdges.polarContraction A = A
+@LehnerEdges.abs_re_trace_pos_mul_le : ∀ {N : ℕ} {P : LehnerEdges.Mat N},
+  Matrix.PosSemidef P → ∀ (T : LehnerEdges.Mat N), |(P * T).trace.re| ≤ ‖T‖ * (Matrix.trace P).re
+@LehnerEdges.abs_frobeniusPair_le_traceNorm : ∀ {N M : ℕ} (W A : Matrix (Fin N) (Fin M) ℂ),
+  |LehnerEdges.frobeniusPair W A| ≤ ‖W‖ * LehnerEdges.traceNorm A
+@LehnerEdges.polarContraction_pair : ∀ {N M : ℕ} (A : Matrix (Fin N) (Fin M) ℂ),
+  LehnerEdges.frobeniusPair (LehnerEdges.polarContraction A) A = LehnerEdges.traceNorm A
+@LehnerEdges.traceNorm_eq_sup_contractions : ∀ {N M : ℕ} (A : Matrix (Fin N) (Fin M) ℂ),
+  LehnerEdges.traceNorm A = sSup (Set.range fun W => LehnerEdges.frobeniusPair (↑W) A)
+@LehnerEdges.re_trace_mono : ∀ {N : ℕ} {A B : LehnerEdges.Mat N}, A ≤ B → (Matrix.trace A).re ≤ (Matrix.trace B).re
+@LehnerEdges.traceNorm_nonneg : ∀ {N M : ℕ} (A : Matrix (Fin N) (Fin M) ℂ), 0 ≤ LehnerEdges.traceNorm A
+@LehnerEdges.mul_adjoint_le : ∀ {N M : ℕ} (B : Matrix (Fin N) (Fin M) ℂ), B * B.conjTranspose ≤ ‖B‖ ^ 2 • 1
+@LehnerEdges.adjoint_mul_le : ∀ {N M : ℕ} (B : Matrix (Fin N) (Fin M) ℂ), B.conjTranspose * B ≤ ‖B‖ ^ 2 • 1
+@LehnerEdges.conjugate_mono : ∀ {L N : ℕ} (A : Matrix (Fin L) (Fin N) ℂ) {P Q : LehnerEdges.Mat N},
+  P ≤ Q → A * P * A.conjTranspose ≤ A * Q * A.conjTranspose
+@LehnerEdges.sqrt_smul_sq : ∀ {N : ℕ} (P : LehnerEdges.Mat N),
+  Matrix.PosSemidef P → ∀ {r : ℝ}, 0 ≤ r → CFC.sqrt (r ^ 2 • P) = r • CFC.sqrt P
+@LehnerEdges.traceNorm_mul_le : ∀ {L N M : ℕ} (A : Matrix (Fin L) (Fin N) ℂ) (B : Matrix (Fin N) (Fin M) ℂ),
+  LehnerEdges.traceNorm (A * B) ≤ ‖B‖ * LehnerEdges.traceNorm A
+@LehnerEdges.frobeniusSq_adjoint : ∀ {N M : ℕ} (A : Matrix (Fin N) (Fin M) ℂ),
+  LehnerEdges.frobeniusSq A.conjTranspose = LehnerEdges.frobeniusSq A
+@LehnerEdges.frobeniusSq_mul_le : ∀ {L N M : ℕ} (A : Matrix (Fin L) (Fin N) ℂ) (B : Matrix (Fin N) (Fin M) ℂ),
+  LehnerEdges.frobeniusSq (A * B) ≤ ‖A‖ ^ 2 * LehnerEdges.frobeniusSq B
+@LehnerEdges.opNorm_le_frobenius : ∀ {N M : ℕ} (A : Matrix (Fin N) (Fin M) ℂ), ‖A‖ ≤ √(LehnerEdges.frobeniusSq A)
+@LehnerEdges.opNorm_sq_le_frobeniusSq : ∀ {N M : ℕ} (A : Matrix (Fin N) (Fin M) ℂ), ‖A‖ ^ 2 ≤ LehnerEdges.frobeniusSq A
+@LehnerEdges.inverseSqrt_hermitian : ∀ {N : ℕ} (E : LehnerEdges.Mat N), Matrix.IsHermitian (LehnerEdges.inverseSqrt E)
+@LehnerEdges.inverseSqrt_mul : ∀ {N : ℕ} (E : LehnerEdges.Mat N),
+  Matrix.PosSemidef E → LehnerEdges.inverseSqrt E * E = CFC.sqrt E
+@LehnerEdges.polarContraction_mul_adjoint : ∀ {N M : ℕ} (A : Matrix (Fin N) (Fin M) ℂ),
+  LehnerEdges.polarContraction A * A.conjTranspose = CFC.sqrt (A * A.conjTranspose)
+@LehnerEdges.sqrt_eq_real_cfc : ∀ {N : ℕ} (E : LehnerEdges.Mat N), Matrix.PosSemidef E → CFC.sqrt E = cfc Real.sqrt E
+@LehnerEdges.polarContraction_norm_le : ∀ {N M : ℕ} (A : Matrix (Fin N) (Fin M) ℂ), ‖LehnerEdges.polarContraction A‖ ≤ 1
+@LehnerEdges.traceNorm_mul_le_frobenius : ∀ {L N M : ℕ} (A : Matrix (Fin L) (Fin N) ℂ) (B : Matrix (Fin N) (Fin M) ℂ),
+  LehnerEdges.traceNorm (A * B) ≤ √(LehnerEdges.frobeniusSq A) * √(LehnerEdges.frobeniusSq B)
+@LehnerEdges.lambdaMax_le_iff : ∀ {N : ℕ} [NeZero N] {B : LehnerEdges.Mat N},
+  Matrix.IsHermitian B → ∀ (r : ℝ), LehnerEdges.lambdaMax B ≤ r ↔ B ≤ r • 1
+@LehnerEdges.le_lambdaMin_iff : ∀ {N : ℕ} [NeZero N] {B : LehnerEdges.Mat N},
+  Matrix.IsHermitian B → ∀ (r : ℝ), r ≤ LehnerEdges.lambdaMin B ↔ r • 1 ≤ B
+@LehnerEdges.density_trace_le_lambdaMax : ∀ {N : ℕ} [NeZero N] (C : LehnerEdges.Density N) {B : LehnerEdges.Mat N},
+  Matrix.IsHermitian B → (B * ↑C).trace.re ≤ LehnerEdges.lambdaMax B
+@LehnerEdges.lambdaMax_sub_le : ∀ {N : ℕ} [NeZero N] {A B : LehnerEdges.Mat N},
+  Matrix.IsHermitian A → Matrix.IsHermitian B → LehnerEdges.lambdaMax A - LehnerEdges.lambdaMax B ≤ ‖A - B‖
+@LehnerEdges.abs_lambdaMax_sub_le : ∀ {N : ℕ} [NeZero N] {A B : LehnerEdges.Mat N},
+  Matrix.IsHermitian A → Matrix.IsHermitian B → |LehnerEdges.lambdaMax A - LehnerEdges.lambdaMax B| ≤ ‖A - B‖
+@LehnerEdges.lambdaMax_neg : ∀ {N : ℕ} [NeZero N] {B : LehnerEdges.Mat N},
+  Matrix.IsHermitian B → LehnerEdges.lambdaMax (-B) = -LehnerEdges.lambdaMin B
+@LehnerEdges.lambdaMin_neg : ∀ {N : ℕ} [NeZero N] {B : LehnerEdges.Mat N},
+  Matrix.IsHermitian B → LehnerEdges.lambdaMin (-B) = -LehnerEdges.lambdaMax B
+@LehnerEdges.abs_lambdaMin_sub_le : ∀ {N : ℕ} [NeZero N] {A B : LehnerEdges.Mat N},
+  Matrix.IsHermitian A → Matrix.IsHermitian B → |LehnerEdges.lambdaMin A - LehnerEdges.lambdaMin B| ≤ ‖A - B‖
+@LehnerEdges.opNorm_eq_max_edges : ∀ {N : ℕ} [NeZero N] {B : LehnerEdges.Mat N},
+  Matrix.IsHermitian B → ‖B‖ = max (LehnerEdges.lambdaMax B) (-LehnerEdges.lambdaMin B)
+@LehnerEdges.lehnerMatrix_hermitian : ∀ {N n : ℕ} (A₀ : LehnerEdges.Mat N) (A : Fin n → LehnerEdges.Mat N),
+  Matrix.IsHermitian A₀ →
+    (∀ (i : Fin n), Matrix.IsHermitian (A i)) →
+      ∀ (Z : LehnerEdges.Mat N), Matrix.PosDef Z → Matrix.IsHermitian (LehnerEdges.lehnerMatrix A₀ A Z)
+@LehnerEdges.densityFunctional_le_lehnerMatrix : ∀ {N n : ℕ} [NeZero N] (A₀ : LehnerEdges.Mat N)
+  (A : Fin n → LehnerEdges.Mat N),
+  Matrix.IsHermitian A₀ →
+    (∀ (i : Fin n), Matrix.IsHermitian (A i)) →
+      ∀ (C : LehnerEdges.Density N) (Z : LehnerEdges.Mat N),
+        Matrix.PosDef Z → LehnerEdges.densityFunctional A₀ A C ≤ LehnerEdges.lambdaMax (LehnerEdges.lehnerMatrix A₀ A Z)
+@LehnerEdges.densityFunctional_le_rhoPlus : ∀ {N n : ℕ} [NeZero N] (A₀ : LehnerEdges.Mat N)
+  (A : Fin n → LehnerEdges.Mat N),
+  Matrix.IsHermitian A₀ →
+    (∀ (i : Fin n), Matrix.IsHermitian (A i)) →
+      ∀ (C : LehnerEdges.Density N), LehnerEdges.densityFunctional A₀ A C ≤ LehnerEdges.rhoPlus A₀ A
+@LehnerEdges.complexGaussianMatrix_norm_lipschitz : ∀ {N M : ℕ},
+  LipschitzWith ⟨1 / √2, ⋯⟩ fun g => ‖LehnerEdges.complexGaussianMatrix g‖
+@LehnerEdges.complex_gaussian_matrix_norm_concentration : ∀ {N M : ℕ} {t : ℝ},
+  0 ≤ t →
+    (ProbabilityTheory.stdGaussian (EuclideanSpace ℂ (Fin N × Fin M))).real
+        {g |
+          t ≤
+            ‖LehnerEdges.complexGaussianMatrix g‖ -
+              ∫ (h : EuclideanSpace ℂ (Fin N × Fin M)),
+                ‖LehnerEdges.complexGaussianMatrix
+                    h‖ ∂ProbabilityTheory.stdGaussian (EuclideanSpace ℂ (Fin N × Fin M))} ≤
+      Real.exp (-t ^ 2)
+@LehnerEdges.wishartMatrix_posSemidef : ∀ {N M : ℕ} (Γ : Matrix (Fin N) (Fin M) ℂ),
+  Matrix.PosSemidef (LehnerEdges.wishartMatrix Γ)
+@LehnerEdges.wishart_sqrt_norm : ∀ {N M : ℕ} (Γ : Matrix (Fin N) (Fin M) ℂ), √‖LehnerEdges.wishartMatrix Γ‖ = ‖Γ‖ / √↑M
